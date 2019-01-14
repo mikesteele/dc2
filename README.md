@@ -1,6 +1,6 @@
 This is a WIP rewrite of https://github.com/mikesteele/dual-captions/.
 
-Instead of injecting individual content scripts, this rewrite injects a React app into the page.
+Instead of injecting individual content scripts, this rewrite injects a bundled React app into the page.
 
 ## Why rewrite?
 
