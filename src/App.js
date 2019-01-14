@@ -4,6 +4,7 @@ import Adapter from './Adapter';
 import Parser from './Parser';
 import PopupMessageHandler from './PopupMessageHandler';
 import Provider from './Provider';
+import Captions from './Captions';
 
 const NetflixAdapter = {
   root: document.body,
@@ -14,6 +15,7 @@ const NetflixAdapter = {
     return {
       root: node,
       captionText: captionWindow ? captionWindow.textContent : null,
+      captionWindow: captionWindow ? captionWindow : null,
       video: video ? video : null
     };
   }
@@ -34,13 +36,13 @@ class App extends React.Component {
                     adapter={adapter}
                     parser={parser}
                     settings={settings}>
-                    {(currentCaptionToRender) => {
-                      if (settings.isOn) {
-                        return <div>{currentCaptionToRender}</div>
-                      } else {
-                        return null;
-                      }
-                    }}
+                    {(currentCaptionToRender) => (
+                      <Captions
+                        adapter={adapter}
+                        currentCaptionToRender={currentCaptionToRender}
+                        settings={settings}
+                      />
+                    )}
                   </Provider>
                 )}
               </PopupMessageHandler>

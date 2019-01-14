@@ -1,0 +1,48 @@
+import React from 'react';
+import Popper from 'popper.js';
+
+class Captions extends React.Component {
+  constructor(props) {
+    super(props);
+    this.attachToCaptionWindow = this.attachToCaptionWindow.bind(this);
+    this.canAttachToCaptionWindow = this.canAttachToCaptionWindow.bind(this);
+  }
+
+  canAttachToCaptionWindow() {
+    return !this.popper && this.captionRef && this.props.adapter.captionWindow;
+  }
+
+  attachToCaptionWindow() {
+    console.log('Attaching...');
+    this.popper = new Popper(
+      this.props.adapter.captionWindow,
+      this.captionRef
+    );
+  }
+
+  componentDidMount() {
+    if (this.canAttachToCaptionWindow()) {
+      this.attachToCaptionWindow();
+    }
+  }
+
+  componentWillUnmount() {
+    // TODO - Delete this.popper - ?
+  }
+
+  componentDidUpdate() {
+    if (this.canAttachToCaptionWindow()) {
+      this.attachToCaptionWindow();
+    }
+  }
+
+  render() {
+    return (
+      <div ref={ref => { this.captionRef = ref }}>
+        { this.props.currentCaptionToRender }
+      </div>
+    );
+  }
+}
+
+export default Captions;

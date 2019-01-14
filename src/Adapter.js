@@ -1,21 +1,22 @@
-import React from 'react';
-
 const Adapter = (props) => {
   const site = 'netflix';
   const { awareness, awarenessIsInDOM } = props;
   let playerCurrentTime = null;
   let videoId = 'TODO';
   let captionText = null;
+  let captionWindow = null;
   const onPopupOpened = () => { console.log('TODO') };
   if (awareness) {
     const { video } = awareness;
     playerCurrentTime = video && video.currentTime;
     captionText = awareness.captionText;
+    captionWindow = awareness.captionWindow;
   }
   const adapter = {
     awareness,
     awarenessIsInDOM,
     captionText,
+    captionWindow,
     playerCurrentTime,
     videoId,
     onPopupOpened,
