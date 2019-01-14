@@ -32,4 +32,4 @@ yarn
 yarn build
 ```
 
-Load the extension as an unpacked extension in Chrome. For more information, see https://developer.chrome.com/extensions/getstarted#unpacked.
+Load `/build/` as an unpacked extension in Chrome. For more information, see https://developer.chrome.com/extensions/getstarted#unpacked.
