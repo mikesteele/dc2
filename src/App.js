@@ -135,13 +135,40 @@ class Provider extends React.Component {
       translations: {}
     }
     this.onMessage = this.onMessage.bind(this);
+    this.canUseCaptionsFromVideo = this.canUseCaptionsFromVideo.bind(this);
     if (global.chrome && global.chrome.runtime && global.chrome.runtime.onMessage) {
       global.chrome.runtime.onMessage.addListener(this.onMessage);
     }
   }
 
   canUseCaptionsFromVideo() {
-    return false;
+    const currentSite = this.props.adapter.site;
+    const videoId = this.props.adapter.videoId;
+    const secondSubtitleLanguage = this.props.settings.secondSubtitleLanguage;
+    if (this.state.captions
+      && this.state.captions[currentSite]
+      && this.state.captions[currentSite][videoId]
+      && this.state.captions[currentSite][videoId][secondSubtitleLanguage]) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  getCaptionToRender() {
+    const currentSite = this.props.adapter.site;
+    const videoId = this.props.adapter.videoId;
+    const secondSubtitleLanguage = this.props.settings.secondSubtitleLanguage;
+    const currentTime = this.props.adapter.playerCurrentTime;
+    const captions = this.state.captions[currentSite][videoId][secondSubtitleLanguage];
+    let captionToRender = captions.find(caption => {
+      return caption.startTime < currentTime && currentTime < caption.endTime;
+    });
+    if (captionToRender) {
+      return captionToRender.text;
+    } else {
+      return null;
+    }
   }
 
   guessLanguageOfCaptions(captions) {
@@ -153,9 +180,27 @@ class Provider extends React.Component {
   }
 
   loadCaptions(captions, language) {
-    const currentSite = this.props.adapter.site;
-    const videoId = this.props.adapter.videoId;
-    // TODO
+    return new Promise((resolve, reject) => {
+      const currentSite = this.props.adapter.site;
+      const videoId = this.props.adapter.videoId;
+      this.setState(state => {
+        let nextState = {...state};
+        if (state.captions[currentSite] && state.captions[currentSite][videoId]) {
+          // TODO - Bail out if already loaded this language
+          nextState.captions[currentSite][videoId][language] = captions;
+        } else if (state.captions[currentSite]) {
+          nextState.captions[currentSite][videoId] = {};
+          nextState.captions[currentSite][videoId][language] = captions;
+        } else {
+          nextState.captions[currentSite] = {};
+          nextState.captions[currentSite][videoId] = {};
+          nextState.captions[currentSite][videoId][language] = captions;
+        }
+        return nextState;
+      }, () => {
+        resolve();
+      });
+    });
   }
 
   onMessage(message, sender, sendResponse) {
@@ -167,11 +212,11 @@ class Provider extends React.Component {
         .then(this.guessLanguageOfCaptions)
         .then(result => {
           const {captions, language} = result;
-          console.log(`processor - Loading captions for ${language}...`);
-          return window.DC.provider.__loadCaptions(captions, language)
+          return this.loadCaptions(captions, language);
         })
         .then(() => {
           console.log('Loaded.');
+          console.log(this.state);
           sendResponse({
             ok: true
           });
@@ -244,6 +289,7 @@ class Provider extends React.Component {
 
     let currentCaptionToRender = 'Loading...';
     if (this.canUseCaptionsFromVideo()) {
+      console.log('Can use captions from video!');
       currentCaptionToRender = this.getCaptionToRender();
     }
     // else {
@@ -266,7 +312,8 @@ class PopupMessageHandler extends React.Component {
   render() {
     //const settings = this.state.settings;
     return this.props.children({
-      isOn: true
+      isOn: true,
+      secondSubtitleLanguage: 'en' // TODO
     });
   }
 }
@@ -278,21 +325,22 @@ class App extends React.Component {
         {(adapter) => (
           <Parser>
             {(parser) => (
-              <Provider
-                adapter={adapter}
-                parser={parser}>
-                {(currentCaptionToRender) => (
-                  <PopupMessageHandler>
-                    {(settings) => {
+              <PopupMessageHandler>
+                {(settings) => (
+                  <Provider
+                    adapter={adapter}
+                    parser={parser}
+                    settings={settings}>
+                    {(currentCaptionToRender) => {
                       if (settings.isOn) {
                         return <div>{currentCaptionToRender}</div>
                       } else {
                         return null;
                       }
                     }}
-                  </PopupMessageHandler>
+                  </Provider>
                 )}
-              </Provider>
+              </PopupMessageHandler>
             )}
           </Parser>
         )}
