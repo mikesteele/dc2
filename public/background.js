@@ -13,6 +13,7 @@ class BackgroundPage {
     // Methods
     this._onMessage = this._onMessage.bind(this);
     this._onBeforeYouTubeCaptionRequest = this._onBeforeYouTubeCaptionRequest.bind(this);
+    this._onTabUpdated = this._onTabUpdated.bind(this);
 
     // Listeners
     chrome.runtime.onMessage.addListener(this._onMessage);
@@ -26,6 +27,8 @@ class BackgroundPage {
         urls: [window.NETFLIX_CAPTION_REQUEST_PATTERN]
       }
     );
+
+    chrome.tabs.onUpdated.addListener(this._onTabUpdated);
   }
 
   _onBeforeYouTubeCaptionRequest(details) {
@@ -39,6 +42,13 @@ class BackgroundPage {
       this.captionRequestUrls.youtube[videoId] = url.href;
       console.log(`Background - Adding ${details.url} to captionRequestUrls.youtube.${videoId}`);
     }
+  }
+
+  _onTabUpdated(tabId, changeInfo, tab) {
+    // TODO - Send message to tabId
+    window.sendMessageToActiveTab({
+      type: 'tab-did-update'
+    });
   }
 
   _onBeforeNetflixCaptionRequest(details) {
@@ -112,7 +122,5 @@ window.sendMessageToActiveTab = (message) => {
       });
     });
 }
-
-
 
 window.DC_BackgroundPage = new BackgroundPage();
