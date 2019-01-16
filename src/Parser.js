@@ -1,5 +1,3 @@
-import React from 'react';
-
 const parseNetflixCaptionFile = (captionFile) => {
   return new Promise((resolve, reject) => {
     const captions = [];

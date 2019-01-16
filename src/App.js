@@ -4,6 +4,7 @@ import Adapter from './Adapter';
 import Parser from './Parser';
 import PopupMessageHandler from './PopupMessageHandler';
 import Provider from './Provider';
+import Captions from './Captions';
 import NetflixAdapter from './adapters/netflix';
 import YoutubeAdapter from './adapters/youtube';
 
@@ -22,13 +23,13 @@ class App extends React.Component {
                     adapter={adapter}
                     parser={parser}
                     settings={settings}>
-                    {(currentCaptionToRender) => {
-                      if (settings.isOn) {
-                        return <div>{currentCaptionToRender}</div>
-                      } else {
-                        return null;
-                      }
-                    }}
+                    {(currentCaptionToRender) => (
+                      <Captions
+                        adapter={adapter}
+                        currentCaptionToRender={currentCaptionToRender}
+                        settings={settings}
+                      />
+                    )}
                   </Provider>
                 )}
               </PopupMessageHandler>
