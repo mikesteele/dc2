@@ -7,6 +7,7 @@ const YoutubeAdapter = {
     return {
       root: node,
       captionWindow: captionWindow ? captionWindow : null,
+      captionWindowPosition: captionWindow ? captionWindow.style.cssText : null,
       captionText: captionWindow ? captionWindow.textContent : null,
       video: video ? video : null
     };

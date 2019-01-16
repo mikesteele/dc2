@@ -8,7 +8,7 @@ import Captions from './Captions';
 import NetflixAdapter from './adapters/netflix';
 import YoutubeAdapter from './adapters/youtube';
 
-const ConnectedAdapter = withPersistentAwareness(Adapter, YoutubeAdapter);
+const ConnectedAdapter = withPersistentAwareness(Adapter, NetflixAdapter);
 
 class App extends React.Component {
   render() {
