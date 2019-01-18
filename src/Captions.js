@@ -39,8 +39,6 @@ class Captions extends React.Component {
   }
 
   render() {
-    console.log('Rendering...')
-    console.log(this.props.adapter);
     return (
       <div ref={ref => { this.captionRef = ref }}>
         { this.props.currentCaptionToRender }

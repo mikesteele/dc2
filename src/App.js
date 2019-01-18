@@ -20,6 +20,8 @@ class App extends React.Component {
             if (site ===  'netflix') {
               ConnectedAdapter = withPersistentAwareness(Adapter, NetflixAdapter);
               // TODO - Should have an HOC to pass site
+            } else if (site === 'youtube') {
+              ConnectedAdapter = withPersistentAwareness(Adapter, YoutubeAdapter);
             } else {
               throw new Error(`No adapter found for site: ${site}`); // TODO - Doesn't get caught by ErrorBoundary
             }
@@ -34,13 +36,13 @@ class App extends React.Component {
                             adapter={adapter}
                             parser={parser}
                             settings={settings}>
-                            {(currentCaptionToRender) => {
-                              if (settings.isOn) {
-                                return <div>{currentCaptionToRender}</div>
-                              } else {
-                                return null;
-                              }
-                            }}
+                            {(currentCaptionToRender) => (
+                              <Captions
+                                adapter={adapter}
+                                currentCaptionToRender={currentCaptionToRender}
+                                settings={settings}
+                              />
+                            )}
                           </Provider>
                         )}
                       </PopupMessageHandler>
