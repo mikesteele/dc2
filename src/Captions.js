@@ -9,7 +9,7 @@ class Captions extends React.Component {
   }
 
   canAttachToCaptionWindow() {
-    return !this.popper && this.captionRef && this.props.adapter.captionWindow;
+    return this.captionRef && this.props.adapter.captionWindow;
   }
 
   attachToCaptionWindow() {
@@ -30,9 +30,11 @@ class Captions extends React.Component {
     // TODO - Delete this.popper - ?
   }
 
-  componentDidUpdate() {
-    if (this.canAttachToCaptionWindow()) {
-      this.attachToCaptionWindow();
+  componentDidUpdate(prevProps) {
+    if (prevProps.adapter.captionWindowPosition !== this.props.adapter.captionWindowPosition) {
+      if (this.canAttachToCaptionWindow()) {
+        this.attachToCaptionWindow();
+      }
     }
   }
 
