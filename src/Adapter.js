@@ -75,8 +75,7 @@ class Adapter extends React.Component {
 }
 =======
 const Adapter = (props) => {
-  const site = 'netflix';
-  const { awareness, awarenessIsInDOM } = props;
+  const { awareness, awarenessIsInDOM, site } = props;
   let playerCurrentTime = null;
   let videoId = 'TODO';
   let captionText = null;
