@@ -4,22 +4,11 @@ import Adapter from './Adapter';
 import Parser from './Parser';
 import PopupMessageHandler from './PopupMessageHandler';
 import Provider from './Provider';
+import Captions from './Captions';
+import NetflixAdapter from './adapters/netflix';
+import YoutubeAdapter from './adapters/youtube';
 
-const NetflixAdapter = {
-  root: document.body,
-  uniqueSelector: '.nfp.AkiraPlayer',
-  value: (node) => {
-    const captionWindow = document.querySelector('.player-timedtext');
-    const video = document.querySelector('video');
-    return {
-      root: node,
-      captionText: captionWindow ? captionWindow.textContent : null,
-      video: video ? video : null
-    };
-  }
-}
-
-const ConnectedAdapter = withPersistentAwareness(Adapter, NetflixAdapter);
+const ConnectedAdapter = withPersistentAwareness(Adapter, YoutubeAdapter);
 
 class App extends React.Component {
   render() {
@@ -34,13 +23,13 @@ class App extends React.Component {
                     adapter={adapter}
                     parser={parser}
                     settings={settings}>
-                    {(currentCaptionToRender) => {
-                      if (settings.isOn) {
-                        return <div>{currentCaptionToRender}</div>
-                      } else {
-                        return null;
-                      }
-                    }}
+                    {(currentCaptionToRender) => (
+                      <Captions
+                        adapter={adapter}
+                        currentCaptionToRender={currentCaptionToRender}
+                        settings={settings}
+                      />
+                    )}
                   </Provider>
                 )}
               </PopupMessageHandler>
