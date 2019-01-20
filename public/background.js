@@ -40,8 +40,11 @@ class BackgroundPage {
     this.youtubeCaptionRequestPattern = 'https://www.youtube.com/api/timedtext*';
 
     // Binds
+    this.onTabUpdated = this.onTabUpdated.bind(this);
     this.onBeforeNetflixCaptionRequest = this.onBeforeNetflixCaptionRequest.bind(this);
     this.onBeforeYouTubeCaptionRequest = this.onBeforeYouTubeCaptionRequest.bind(this);
+
+    // TODO - Need window.chrome?
 
     // Listeners
     chrome.webRequest.onBeforeRequest.addListener(
@@ -54,6 +57,7 @@ class BackgroundPage {
         urls: [this.netflixCaptionRequestPattern]
       }
     );
+    chrome.tabs.onUpdated.addListener(this.onTabUpdated);
   }
 
   onBeforeNetflixCaptionRequest(details) {
@@ -82,6 +86,17 @@ class BackgroundPage {
         // TODO - delete this.captionRequestsInFlight[details.url];
       }).catch(err => {
         console.log(`Couldn't process YouTube caption request. Error: ${err}`);
+      });
+    }
+  }
+
+  onTabUpdated(tabId, changeInfo, tab) {
+    if (tabId && changeInfo.url) {
+      // TODO - Could optimize?
+      window.chrome.tabs.sendMessage(tabId, {
+        type: 'tab-updated-url'
+      }, response => {
+        // TODO - Need to do anything? Probably not.
       });
     }
   }

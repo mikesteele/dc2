@@ -4,35 +4,68 @@ class Adapter extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      videoId: 'TODO'
+      videoId: null
     };
     this.detectVideoId = this.detectVideoId.bind(this);
+    this.onMessage = this.onMessage.bind(this);
+  }
 
-    if (this.props.site) {
-      // TODO - Does this work?
+  componentDidMount() {
+    if (global.chrome && global.chrome.runtime && global.chrome.runtime.onMessage) {
+      global.chrome.runtime.onMessage.addListener(this.onMessage);
+    }
+  }
+
+  componentDidUpdate(prevProps) {
+    // TODO - Could optimize
+    if (this.props.site && !this.state.videoId) {
       this.detectVideoId();
     }
   }
 
-  componentDidMount() {
-    // TODO - global.chrome.onMessage(this.onMessage)
+  detectVideoId() {
+    let videoId = null;
+    if (this.props.site === 'netflix') {
+      videoId = this.detectNetflixVideoId();
+    } else if (this.props.site === 'youtube') {
+      videoId = this.detectYoutubeVideoId(); // TODO - Audit repo for Youtube vs YouTube
+    }
+    this.setState({
+      videoId
+    });
   }
 
-  detectVideoId() {
-    if (this.props.site) {
-      this.setState({
-        videoId: 'TODO'
-      });
+  detectNetflixVideoId() {
+    const videoIdPattern = /watch\/(\d+)/;
+    const pathname = window.location.pathname;
+    if (videoIdPattern.test(pathname)) {
+      return videoIdPattern.exec(pathname)[1];
+    } else {
+      return null;
     }
   }
 
-  onMessage() {
-    // TODO - If tab did navigate, re-detect video ID
+  detectYoutubeVideoId() {
+    const url = new URL(window.location.href);
+    const videoId = url.searchParams.get('v');
+    return videoId ? videoId : null;
+  }
+
+  onMessage(message, sender, sendResponse) {
+    if (!message.type) return;
+    switch (message.type) {
+      case 'tab-updated-url':
+      this.detectVideoId();
+      break;
+
+      default:
+      break;
+    }
   }
 
   render() {
-    const { videoId } = this.state;
     const { awareness, site } = this.props;
+    const { videoId } = this.state;
     let playerCurrentTime = null;
     let captionClassName = null;
     let captionWindow = null;
