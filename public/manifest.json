@@ -25,6 +25,7 @@
       "static/js/main.js"
     ],
     "matches": [
+      "https://www.amazon.com/*",
       "https://www.youtube.com/*",
       "https://www.netflix.com/*"
     ]

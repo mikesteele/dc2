@@ -9,6 +9,7 @@ import Provider from './Provider';
 import Captions from './Captions';
 import NetflixAdapter from './adapters/netflix';
 import YoutubeAdapter from './adapters/youtube';
+import AmazonAdapter from './adapters/amazon';
 import InjectedStyles from './Styles';
 
 class App extends React.Component {
@@ -24,6 +25,8 @@ class App extends React.Component {
               // TODO - Should have an HOC to pass site
             } else if (site === 'youtube') {
               ConnectedAdapter = withPersistentAwareness(Adapter, YoutubeAdapter);
+            } else if (site === 'amazon') {
+              ConnectedAdapter = withPersistentAwareness(Adapter, AmazonAdapter);
             } else if (site === null) {
               return (
                 <div/>

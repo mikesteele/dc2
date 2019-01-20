@@ -9,11 +9,11 @@ const YoutubeAdapter = {
     captionWindow = document.querySelector('.ytp-caption-window-bottom');
     caption = document.querySelector('.captions-text > span');
     return {
-      root: node,
+      root: node, // TODO - Remove?
       captionWindow: captionWindow ? captionWindow : null,
       captionWindowPosition: captionWindow ? captionWindow.style.cssText : null,
-      captionText: captionWindow ? captionWindow.textContent : null,
-      captionStyle: caption ? caption.style.cssText : null,
+      captionText: captionWindow ? captionWindow.textContent : null, // TODO - Remove?
+      captionStyle: caption ? caption.style.cssText : null,  // TODO - Should be captionStyleCSSText?
       captionClassName: 'captions-text',
       video: video ? video : null
     };

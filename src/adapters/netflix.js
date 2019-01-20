@@ -11,11 +11,11 @@ const NetflixAdapter = {
       caption = captionWindow.querySelector('span'); // TODO - Can use .firstChild?
     }
     return {
-      root: node,
+      root: node, // TODO - Remove?
       captionWindow: captionWindow ? captionWindow : null,
       captionWindowPosition: captionWindow ? captionWindow.style.cssText : null,
-      captionText: captionWindow ? captionWindow.textContent : null,
-      captionStyle: caption ? caption.style.cssText : null,
+      captionText: captionWindow ? captionWindow.textContent : null, // TODO - Remove?
+      captionStyle: caption ? caption.style.cssText : null,  // TODO - Should be captionStyleCSSText?
       video: video ? video : null
     };
   }

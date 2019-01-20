@@ -18,6 +18,10 @@ class Site extends React.Component {
       this.setState({
         site: 'youtube'
       });
+    } else if (currentURL.includes('amazon')) {
+      this.setState({
+        site: 'amazon'
+      });
     }
   }
 
