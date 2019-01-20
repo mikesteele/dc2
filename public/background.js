@@ -51,6 +51,11 @@ class BackgroundPage {
     });
   }
 
+  // TODO _onBeforeYouTubeCaptionRequest
+  // TODO - I think we should send a common message, like 'process-caption-request'
+  // with the site in the payload
+  // The provider can ignore the request if the site doesn't match
+
   _onBeforeNetflixCaptionRequest(details) {
     if (!window.netflixCaptionRequestsInFlight.hasOwnProperty(details.url)) {
       window.netflixCaptionRequestsInFlight[details.url] = 1;
