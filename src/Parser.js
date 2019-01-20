@@ -43,12 +43,13 @@ const parseNetflixCaptionFile = (captionFile) => {
                   && captions[captions.length - 1].startTime === startTime
                   && captions[captions.length - 1].endTime   === endTime) {
                 const lastCaption = captions[captions.length - 1];
-                lastCaption.text = `${lastCaption.text}<br/>${currentChild.innerHTML}`;
+                lastCaption.text = `${lastCaption.text}\n${currentChild.textContent}`;
+                // TODO - This doesn't work great, need a more reliable way to break
               } else {
                 captions.push({
                   startTime: startTime,
                   endTime: endTime,
-                  text: currentChild.innerHTML
+                  text: currentChild.textContent
                 });
               }
             } else {
