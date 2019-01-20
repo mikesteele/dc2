@@ -4,11 +4,12 @@ class Adapter extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      videoId: null
+      videoId: 'TODO'
     };
     this.detectVideoId = this.detectVideoId.bind(this);
 
     if (this.props.site) {
+      // TODO - Does this work?
       this.detectVideoId();
     }
   }

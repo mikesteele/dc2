@@ -77,9 +77,11 @@ class Provider extends React.Component {
   }
 
   onMessage(message, sender, sendResponse) {
+    // TODO - Test for YouTube
     if (!message.type) return;
     switch (message.type) {
-      case 'process-netflix-caption-request': // TODO - Should be process-caption-request?
+      case 'process-caption-request':
+      // TODO - Bail out if message.site doesn't match
       this.fetchUrl(message.payload)
         .then(captionFile => this.props.parser.parse(captionFile, this.props.adapter.site))
         .then(this.guessLanguageOfCaptions)
@@ -131,28 +133,6 @@ class Provider extends React.Component {
         });
     });
   }
-
-  /**
-   *  MVP doesn't include Google Translated captions
-   *
-
-  translate(captionText) {
-    if (this.state.translations[captionText]) {
-      return this.state.translations[captionText];
-    } else {
-      setTimeout(() => {
-        this.setState(state => ({
-          translations: {
-            ...state.translations,
-            [captionText]: 'Translated!'
-          }
-        }));
-      }, 1000);
-      return 'Loading...';
-    }
-  }
-
-  **/
 
   render() {
     const { adapter } = this.props;

@@ -13,7 +13,7 @@ const YoutubeAdapter = {
       captionWindow: captionWindow ? captionWindow : null,
       captionWindowPosition: captionWindow ? captionWindow.style.cssText : null,
       captionText: captionWindow ? captionWindow.textContent : null,
-      captionStyle: caption ? caption.style.cssText : null,
+      captionStyle: caption ? caption.style.cssText : null,  // TODO - Rename to CaptionCSSText?
       captionClassName: 'captions-text',
       video: video ? video : null
     };
