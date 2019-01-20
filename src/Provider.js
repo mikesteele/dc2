@@ -77,7 +77,6 @@ class Provider extends React.Component {
   }
 
   onMessage(message, sender, sendResponse) {
-    // TODO - Test for YouTube
     if (!message.type) return;
     switch (message.type) {
       case 'process-caption-request':

@@ -1,9 +1,8 @@
-// TODO - Untested
 const parse = (captionFile) => {
   return new Promise((resolve, reject) => {
     let captions = [];
     const domParser = new DOMParser(); // TODO - Move to class instance
-    const xml = domParser.parseFromString(text, 'text/xml');
+    const xml = domParser.parseFromString(captionFile, 'text/xml');
     const body = xml.querySelector('body');
     const timedtext = xml.querySelector('timedtext');
     if (body && timedtext && timedtext.getAttribute('format') === '3') {
