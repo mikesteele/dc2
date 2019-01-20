@@ -134,9 +134,6 @@ class Provider extends React.Component {
   }
 
   render() {
-    const { adapter } = this.props;
-    const captionText = adapter.captionText;
-
     let currentCaptionToRender = 'Loading...';
     if (this.canUseCaptionsFromVideo()) {
       currentCaptionToRender = this.getCaptionToRender();

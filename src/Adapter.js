@@ -32,10 +32,9 @@ class Adapter extends React.Component {
 
   render() {
     const { videoId } = this.state;
-    const { awareness, awarenessIsInDOM, site } = this.props;
+    const { awareness, site } = this.props;
     let playerCurrentTime = null;
     let captionClassName = null;
-    let captionText = null;
     let captionWindow = null;
     let captionWindowPosition = null;
     let captionStyle = null;
@@ -43,18 +42,14 @@ class Adapter extends React.Component {
     if (awareness) {
       const { video } = awareness;
       playerCurrentTime = video && video.currentTime;
-      captionText = awareness.captionText;
       captionWindow = awareness.captionWindow;
       captionWindowPosition = awareness.captionWindowPosition;
       captionStyle = awareness.captionStyle;
       captionClassName = awareness.captionClassName; // TODO - Use null?
     }
     const adapter = {
-      awareness,
-      awarenessIsInDOM,
       captionClassName,
       captionStyle,
-      captionText,
       captionWindow,
       captionWindowPosition,
       playerCurrentTime,

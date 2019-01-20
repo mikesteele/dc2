@@ -11,10 +11,8 @@ const NetflixAdapter = {
       caption = captionWindow.querySelector('span'); // TODO - Can use .firstChild?
     }
     return {
-      root: node,
       captionWindow: captionWindow ? captionWindow : null,
       captionWindowPosition: captionWindow ? captionWindow.style.cssText : null,
-      captionText: captionWindow ? captionWindow.textContent : null,
       captionStyle: caption ? caption.style.cssText : null, // TODO - Rename to CaptionCSSText?
       video: video ? video : null
     };
