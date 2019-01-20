@@ -53,6 +53,7 @@ class Provider extends React.Component {
   }
 
   loadCaptions(captions, language) {
+    // TODO - Don't allow loading captions if null videoId
     return new Promise((resolve, reject) => {
       const currentSite = this.props.adapter.site;
       const videoId = this.props.adapter.videoId;

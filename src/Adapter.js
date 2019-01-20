@@ -30,9 +30,12 @@ class Adapter extends React.Component {
     } else if (this.props.site === 'youtube') {
       videoId = this.detectYoutubeVideoId(); // TODO - Audit repo for Youtube vs YouTube
     }
-    this.setState({
-      videoId
-    });
+    if (videoId !== this.state.videoId) {
+      // TODO - There are probably other places where I'm setting state unnecessarily
+      this.setState({
+        videoId
+      });
+    }
   }
 
   detectNetflixVideoId() {

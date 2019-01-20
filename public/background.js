@@ -61,6 +61,7 @@ class BackgroundPage {
   }
 
   onBeforeNetflixCaptionRequest(details) {
+    // TODO - Do you get requesting tabId in details?
     if (!(details.url in this.captionRequestsInFlight)) {
       this.captionRequestsInFlight[details.url] = 1;
       window.sendMessageToActiveTab({
@@ -76,6 +77,7 @@ class BackgroundPage {
   }
 
   onBeforeYouTubeCaptionRequest(details) {
+    // TODO - Do you get requesting tabId in details?
     if (!(details.url in this.captionRequestsInFlight)) {
       this.captionRequestsInFlight[details.url] = 1;
       window.sendMessageToActiveTab({

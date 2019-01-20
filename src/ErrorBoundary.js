@@ -7,6 +7,7 @@ class ErrorBoundary extends React.Component {
   }
 
   static getDerivedStateFromError(error) {
+    console.error(error); // TODO - Untested
     return { hasError: true };
   }
 
