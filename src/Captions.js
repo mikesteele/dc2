@@ -43,14 +43,18 @@ class Captions extends React.Component {
     if (this.props.adapter.captionClassName) {
       className = `${className} ${this.props.adapter.captionClassName}`
     }
-    return (
-      <div
-        className={className}
-        ref={ref => { this.captionRef = ref }}
-        style={{cssText: this.props.adapter.captionStyle}}>
-        { this.props.currentCaptionToRender }
-      </div>
-    );
+    if (!this.props.settings.isOn) {
+      return null;
+    } else {
+      return (
+        <div
+          className={className}
+          ref={ref => { this.captionRef = ref }}
+          style={{cssText: this.props.adapter.captionStyle}}>
+          { this.props.currentCaptionToRender }
+        </div>
+      );
+    }
   }
 }
 

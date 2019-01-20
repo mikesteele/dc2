@@ -23,6 +23,12 @@ class Adapter extends React.Component {
     }
   }
 
+  componentWillUnmount() {
+    if (global.chrome && global.chrome.runtime && global.chrome.runtime.onMessage) {
+      global.chrome.runtime.onMessage.removeListener(this.onMessage); // TODO - Untested
+    }
+  }
+
   detectVideoId() {
     let videoId = null;
     if (this.props.site === 'netflix') {
