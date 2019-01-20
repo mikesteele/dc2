@@ -9,11 +9,13 @@ import Provider from './Provider';
 import Captions from './Captions';
 import NetflixAdapter from './adapters/netflix';
 import YoutubeAdapter from './adapters/youtube';
+import InjectedStyles from './Styles';
 
 class App extends React.Component {
   render() {
     return (
       <ErrorBoundary>
+        <InjectedStyles/>
         <Site>
           {(site) => {
             let ConnectedAdapter;
@@ -22,6 +24,10 @@ class App extends React.Component {
               // TODO - Should have an HOC to pass site
             } else if (site === 'youtube') {
               ConnectedAdapter = withPersistentAwareness(Adapter, YoutubeAdapter);
+            } else if (site === null) {
+              return (
+                <div/>
+              );
             } else {
               throw new Error(`No adapter found for site: ${site}`); // TODO - Doesn't get caught by ErrorBoundary
             }
