@@ -1,4 +1,5 @@
 import React from 'react';
+import translate from './GoogleTranslate';
 
 class Provider extends React.Component {
   constructor(props) {
@@ -9,6 +10,8 @@ class Provider extends React.Component {
     }
     this.onMessage = this.onMessage.bind(this);
     this.canUseCaptionsFromVideo = this.canUseCaptionsFromVideo.bind(this);
+    this.guessLanguage = this.guessLanguage.bind(this);
+    this.guessLanguageOfCaptions = this.guessLanguageOfCaptions.bind(this);
     if (global.chrome && global.chrome.runtime && global.chrome.runtime.onMessage) {
       global.chrome.runtime.onMessage.addListener(this.onMessage);
     }
@@ -45,10 +48,29 @@ class Provider extends React.Component {
   }
 
   guessLanguageOfCaptions(captions) {
-    // TODO
-    return Promise.resolve({
-      captions,
-      language: 'en'
+    return new Promise((resolve, reject) => {
+      const longestCaption = captions.reduce((a, b) => { return a.text.length > b.text.length ? a : b });
+      this.guessLanguage(longestCaption.text)
+         .then(language => {
+           resolve({
+             captions: captions,
+             language: language
+           });
+         })
+         .catch(reject);
+    });
+  }
+
+  guessLanguage(text) {
+    return new Promise((resolve, reject) => {
+      translate(text, {
+        from: 'auto',
+        to: 'en'
+      })
+      .then(response => {
+        resolve(response.from.language.iso);
+      })
+      .catch(reject);
     });
   }
 
@@ -135,7 +157,7 @@ class Provider extends React.Component {
   }
 
   render() {
-    let currentCaptionToRender = 'Loading...';
+    let currentCaptionToRender = null;
     if (this.canUseCaptionsFromVideo()) {
       currentCaptionToRender = this.getCaptionToRender();
     }
