@@ -28,7 +28,6 @@ class PopupMessageHandler extends React.Component {
   }
 
   onMessage(message, sender, sendResponse) {
-    // TODO - Untested
     if (!message.type) return;
     switch (message.type) {
       case 'detect-site':
@@ -40,20 +39,26 @@ class PopupMessageHandler extends React.Component {
 
       case 'start-observer':
       // TODO - Rename this message.type to 'turn-on'
-      this.setState({
-        isOn: true
-      });
+      // TODO - If this.props.adapter.error ...
+      this.setState(state => ({
+        settings: {
+          ...state.settings,
+          isOn: true
+        }
+      }));
       sendResponse({
         ok: true
       });
-      // TODO - When should show no-player error?
       break;
 
       case 'stop-observer':
       // TODO - Rename this message.type to 'turn-off'
-      this.setState({
-        isOn: false
-      });
+      this.setState(state => ({
+        settings: {
+          ...state.settings,
+          isOn: false
+        }
+      }));
       sendResponse({
         ok: true
       });
