@@ -9,10 +9,13 @@ class PopupMessageHandler extends React.Component {
     // TODO - Need settingsAreDefault?
     this.state = {
       settings: {
-        isOn: true,
+        isOn: true, // TODO - Switch to false in final version
+        extraSpace: false,
         secondSubtitleLanguage: 'en'
       }
     }
+
+    this.changeSetting = this.changeSetting.bind(this);
   }
 
   componentDidMount() {
@@ -27,9 +30,31 @@ class PopupMessageHandler extends React.Component {
     }
   }
 
+  changeSetting(setting, value) {
+    this.setState(state => ({
+      settings: {
+        ...state.settings,
+        [setting]: value
+      }
+    }));
+  }
+
   onMessage(message, sender, sendResponse) {
     if (!message.type) return;
     switch (message.type) {
+
+      // TODO - Should deprecate
+      case 'change-language':
+      this.changeSetting('secondSubtitleLanguage', message.payload);
+      break;
+
+      case 'change-settings':
+      const { extraSpace } = message.payload;
+      if (this.state.settings.extraSpace !== extraSpace) {
+        this.changeSetting('extraSpace', extraSpace);
+      }
+      break;
+
       case 'detect-site':
       sendResponse({
         ok: true,
@@ -37,31 +62,12 @@ class PopupMessageHandler extends React.Component {
       });
       break;
 
-      case 'start-observer':
-      // TODO - Rename this message.type to 'turn-on'
-      // TODO - If this.props.adapter.error ...
-      this.setState(state => ({
-        settings: {
-          ...state.settings,
-          isOn: true
-        }
-      }));
+      // TODO - Should deprecate
+      case 'get-language':
       sendResponse({
-        ok: true
-      });
-      break;
-
-      case 'stop-observer':
-      // TODO - Rename this message.type to 'turn-off'
-      this.setState(state => ({
-        settings: {
-          ...state.settings,
-          isOn: false
-        }
-      }));
-      sendResponse({
-        ok: true
-      });
+        ok: true,
+        secondLanguage: this.state.settings.secondSubtitleLanguage
+      })
       break;
 
       case 'get-state':
@@ -79,7 +85,30 @@ class PopupMessageHandler extends React.Component {
       });
       break;
 
-      // TODO - Add other message.types
+      // TODO - Should deprecate
+      case 'is-on':
+      sendResponse({
+        ok: true,
+        isOn: this.state.settings.isOn
+      });
+      break;
+
+      case 'start-observer':
+      // TODO - Rename this message.type to 'turn-on'
+      // TODO - If this.props.adapter.error ...
+      this.changeSetting('isOn', true);
+      sendResponse({
+        ok: true
+      });
+      break;
+
+      case 'stop-observer':
+      // TODO - Rename this message.type to 'turn-off'
+      this.changeSetting('isOn', false);
+      sendResponse({
+        ok: true
+      });
+      break;
 
       default:
       break;

@@ -43,6 +43,9 @@ class Captions extends React.Component {
     if (this.props.adapter.captionClassName) {
       className = `${className} ${this.props.adapter.captionClassName}`
     }
+    if (this.props.settings.extraSpace) {
+      className = `${className} extra-space`;
+    }
     if (!this.props.settings.isOn) {
       return null;
     } else {
