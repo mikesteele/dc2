@@ -37,4 +37,16 @@ describe('Netflix parser', () => {
         .catch(err => { console.error(err) });
     });
   });
+
+  it('should correctly parse - no span', done => {
+    const captionFile = fs.readFileSync(path.resolve(__dirname, '../assets/netflix/caption-file-no-span-br.txt'));
+    makeParser(parser => {
+      parser.parse(captionFile, currentSite)
+        .then(result => {
+          expect(result[1].text, 'should handle no span').to.equal(`-[tires screeching]\n-[Chase] In just the last few weeks,`);
+          done();
+        })
+        .catch(err => { console.error(err) });
+    });
+  });
 });

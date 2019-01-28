@@ -26,13 +26,13 @@ const parse = (captionFile) => {
               startTime = startTime / tickRate;
               endTime = endTime / tickRate;
               let captionText = currentChild.textContent;
-              if (currentChild.children.length > 1) {
+              if (currentChild.childNodes.length > 1) {
                 /**
                  *  Netflix can use a <br/> inside of captions to insert a break.
                  */
                 captionText = '';
-                for (let j = 0; j < currentChild.children.length; j++) {
-                  const child = currentChild.children[j]; // TODO - Rename
+                for (let j = 0; j < currentChild.childNodes.length; j++) {
+                  const child = currentChild.childNodes[j]; // TODO - Rename
                   if (child.tagName === 'br') {
                     captionText = captionText + '\n';
                   } else {

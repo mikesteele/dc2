@@ -61,7 +61,7 @@ class Captions extends React.Component {
       // Translate new lines (\n) to <br> elements
       const captionToRender = currentCaptionToRender.split('\n').map(sentence => (
         <React.Fragment>
-          <div>{sentence}</div>
+          <span>{sentence}</span>
           <br/>
         </React.Fragment>
       ));
