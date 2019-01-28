@@ -52,6 +52,9 @@ class Captions extends React.Component {
     if (settings.extraSpace) {
       className = `${className} extra-space`;
     }
+    if (!currentCaptionToRender) {
+      return null;
+    }
     if (!settings.isOn) { // TODO - Switch to if (settings.isOn)
       return null;
     } else {
