@@ -79,6 +79,7 @@ class Adapter extends React.Component {
     let captionClassName = null;
     let captionWindow = null;
     let captionWindowPosition = null;
+    let captionWindowStyle = null;
     let captionStyle = null;
     const onPopupOpened = () => { console.log('TODO') };
     if (awareness) {
@@ -88,12 +89,14 @@ class Adapter extends React.Component {
       captionWindowPosition = awareness.captionWindowPosition;
       captionStyle = awareness.captionStyle;
       captionClassName = awareness.captionClassName; // TODO - Use null?
+      captionWindowStyle = awareness.captionWindowStyle;
     }
     const adapter = {
       captionClassName,
       captionStyle,
       captionWindow,
       captionWindowPosition,
+      captionWindowStyle,
       playerCurrentTime,
       videoId,
       onPopupOpened,

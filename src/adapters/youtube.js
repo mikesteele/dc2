@@ -11,7 +11,14 @@ const YoutubeAdapter = {
     return {
       captionWindow: captionWindow ? captionWindow : null,
       captionWindowPosition: captionWindow ? captionWindow.style.cssText : null,
-      captionStyle: caption ? caption.style.cssText : null,  // TODO - Rename to CaptionCSSText?
+      captionWindowStyle: { textAlign: 'center', width: '700px' },
+      captionStyle: caption ? {
+        background: caption.style.background,
+        backgroundColor: caption.style.backgroundColor,
+        color: caption.style.color,
+        fontFamily: caption.style.fontFamily,
+        fontSize: caption.style.fontSize
+      } : null,
       captionClassName: 'captions-text',
       video: video ? video : null
     };

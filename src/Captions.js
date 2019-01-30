@@ -45,39 +45,50 @@ class Captions extends React.Component {
       currentCaptionToRender
     } = this.props;
 
-    let className = 'dc-caption';
+    if (!settings.isOn || !currentCaptionToRender) {
+      return null;
+    }
+
+    // Caption Window props
+    const captionWindowProps = {
+      className: 'dc-window'
+    };
+    if (adapter.captionWindowStyle) {
+      captionWindowProps.style = {
+        ...adapter.captionWindowStyle
+      };
+    }
+
+    // Caption props
+    const captionProps = {
+      className: 'dc-caption'
+    };
     if (adapter.captionClassName) {
-      className = `${className} ${adapter.captionClassName}`
+      captionProps.className = `${captionProps.className} ${adapter.captionClassName}`;
     }
-    if (settings.extraSpace) {
-      className = `${className} extra-space`;
+    if (adapter.captionStyle) {
+      captionProps.style = {
+        ...adapter.captionStyle
+      };
     }
-    if (!currentCaptionToRender) {
-      return null;
-    }
-    if (!settings.isOn) { // TODO - Switch to if (settings.isOn)
-      return null;
-    } else {
-      // Translate new lines (\n) to <br> elements
-      const captionToRender = currentCaptionToRender.split('\n').map(sentence => (
-        <React.Fragment>
-          <span>{sentence}</span>
-          <br/>
-        </React.Fragment>
-      ));
-      return (
-        <div class="dc-window" ref={ref => this.dcWindow = ref}>
-          <div ref={ref => { this.dcPosition = ref }}>
-            <div
-              className={className}
-              ref={ref => { this.captionRef = ref }}
-              style={{cssText: this.props.adapter.captionStyle}}>
-              { captionToRender }
-            </div>
+
+    // Replace \n's with <br/> elements - TODO - Improve this
+    const captionToRender = currentCaptionToRender.split('\n').map(sentence => (
+      <React.Fragment>
+        <span>{sentence}</span>
+        <br/>
+      </React.Fragment>
+    ));
+
+    return (
+      <div {...captionWindowProps}>
+        <div ref={ref => { this.dcPosition = ref }}>
+          <div {...captionProps}>
+            { captionToRender }
           </div>
         </div>
-      );
-    }
+      </div>
+    );
   }
 }
 

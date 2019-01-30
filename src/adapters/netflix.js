@@ -13,7 +13,16 @@ const NetflixAdapter = {
     return {
       captionWindow: captionWindow ? captionWindow : null,
       captionWindowPosition: captionWindow ? captionWindow.style.cssText : null,
-      captionStyle: caption ? caption.style.cssText : null, // TODO - Rename to CaptionCSSText?
+      captionWindowStyle: { textAlign: 'center', width: '700px' },
+      captionStyle: caption ? {
+        background: caption.style.background,
+        backgroundColor: caption.style.backgroundColor,
+        color: caption.style.color,
+        fontFamily: caption.style.fontFamily,
+        fontSize: caption.style.fontSize,
+        fontWeight: caption.style.fontWeight,
+        textShadow: caption.style.textShadow
+      } : null,
       video: video ? video : null
     };
   }
