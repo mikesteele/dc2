@@ -39,22 +39,38 @@ class Captions extends React.Component {
   }
 
   render() {
+    const {
+      adapter,
+      settings,
+      currentCaptionToRender
+    } = this.props;
+    //
     let className = 'dc-caption';
-    if (this.props.adapter.captionClassName) {
-      className = `${className} ${this.props.adapter.captionClassName}`
+    if (adapter.captionClassName) {
+      className = `${className} ${adapter.captionClassName}`
     }
-    if (this.props.settings.extraSpace) {
+    if (settings.extraSpace) {
       className = `${className} extra-space`;
     }
-    if (!this.props.settings.isOn) {
+    if (!currentCaptionToRender) {
+      return null;
+    }
+    if (!settings.isOn) { // TODO - Switch to if (settings.isOn)
       return null;
     } else {
+      // Translate new lines (\n) to <br> elements
+      const captionToRender = currentCaptionToRender.split('\n').map(sentence => (
+        <React.Fragment>
+          <span>{sentence}</span>
+          <br/>
+        </React.Fragment>
+      ));
       return (
         <div
           className={className}
           ref={ref => { this.captionRef = ref }}
           style={{cssText: this.props.adapter.captionStyle}}>
-          { this.props.currentCaptionToRender }
+          { captionToRender }
         </div>
       );
     }

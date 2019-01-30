@@ -36,7 +36,7 @@ class App extends React.Component {
                 {(adapter) => (
                   <Parser>
                     {(parser) => (
-                      <PopupMessageHandler>
+                      <PopupMessageHandler adapter={adapter}>
                         {(settings) => (
                           <Provider
                             adapter={adapter}

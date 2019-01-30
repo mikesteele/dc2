@@ -25,6 +25,21 @@ const parse = (captionFile) => {
               let endTime = tickRatePattern.exec(end)[1];
               startTime = startTime / tickRate;
               endTime = endTime / tickRate;
+              let captionText = currentChild.textContent;
+              if (currentChild.childNodes.length > 1) {
+                /**
+                 *  Netflix can use a <br/> inside of captions to insert a break.
+                 */
+                captionText = '';
+                for (let j = 0; j < currentChild.childNodes.length; j++) {
+                  const child = currentChild.childNodes[j]; // TODO - Rename
+                  if (child.tagName === 'br') {
+                    captionText = captionText + '\n';
+                  } else {
+                    captionText = captionText + child.textContent;
+                  }
+                }
+              }
               /**
               For some videos, Netflix stores a caption as two (or more?) seperate elements in the caption XML.
               For example:
@@ -43,13 +58,12 @@ const parse = (captionFile) => {
                   && captions[captions.length - 1].startTime === startTime
                   && captions[captions.length - 1].endTime   === endTime) {
                 const lastCaption = captions[captions.length - 1];
-                lastCaption.text = `${lastCaption.text}\n${currentChild.textContent}`;
-                // TODO - This doesn't work great, need a more reliable way to break
+                lastCaption.text = `${lastCaption.text}\n${captionText}`;
               } else {
                 captions.push({
                   startTime: startTime,
                   endTime: endTime,
-                  text: currentChild.textContent
+                  text: captionText
                 });
               }
             } else {
