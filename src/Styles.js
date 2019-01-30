@@ -3,6 +3,7 @@ import React from 'react'
 const Styles = () => {
   const styles = `
     .dc-window {
+      position: absolute;
       z-index: 10000;
     }
 
