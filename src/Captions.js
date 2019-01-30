@@ -9,14 +9,14 @@ class Captions extends React.Component {
   }
 
   canAttachToCaptionWindow() {
-    return this.captionRef && this.props.adapter.captionWindow;
+    return this.dcPosition && this.props.adapter.captionWindow;
   }
 
   attachToCaptionWindow() {
     console.log('Attaching...');
     this.popper = new Popper(
       this.props.adapter.captionWindow,
-      this.captionRef
+      this.dcPosition
     );
   }
 
@@ -44,7 +44,7 @@ class Captions extends React.Component {
       settings,
       currentCaptionToRender
     } = this.props;
-    //
+
     let className = 'dc-caption';
     if (adapter.captionClassName) {
       className = `${className} ${adapter.captionClassName}`
@@ -66,11 +66,15 @@ class Captions extends React.Component {
         </React.Fragment>
       ));
       return (
-        <div
-          className={className}
-          ref={ref => { this.captionRef = ref }}
-          style={{cssText: this.props.adapter.captionStyle}}>
-          { captionToRender }
+        <div class="dc-window" ref={ref => this.dcWindow = ref}>
+          <div ref={ref => { this.dcPosition = ref }}>
+            <div
+              className={className}
+              ref={ref => { this.captionRef = ref }}
+              style={{cssText: this.props.adapter.captionStyle}}>
+              { captionToRender }
+            </div>
+          </div>
         </div>
       );
     }

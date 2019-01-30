@@ -6,7 +6,7 @@ const YoutubeAdapter = {
     let captionWindow;
     let video;
     video = document.querySelector('video');
-    captionWindow = document.querySelector('.ytp-caption-window-bottom');
+    captionWindow = document.querySelector('.ytp-caption-window-bottom') || document.querySelector('.caption-window');
     caption = document.querySelector('.captions-text > span');
     return {
       captionWindow: captionWindow ? captionWindow : null,

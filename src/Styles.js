@@ -2,7 +2,7 @@ import React from 'react'
 
 const Styles = () => {
   const styles = `
-    .dc-caption {
+    .dc-window {
       z-index: 10000;
     }
 
