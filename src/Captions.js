@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Popper from 'popper.js';
+import CaptionsWithPopper from './CaptionsWithPopper';
 
 class Captions extends React.Component {
   constructor(props) {
@@ -46,7 +46,14 @@ class Captions extends React.Component {
         </div>
       ), captionWindow);
     } else if (captionWindow && !canRenderInCaptionWindow) {
-      // TODO - Render with Popper.js
+      // TODO - <CaptionsWithPopper {...this.props}/> ?
+      return (
+        <CaptionsWithPopper
+          adapter={adapter}
+          settings={settings}
+          currentCaptionToRender={currentCaptionToRender}
+        />
+      );
     } else {
       return null;
     }
