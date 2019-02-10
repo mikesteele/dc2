@@ -17,7 +17,6 @@ const parse = (captionFile) => {
     } else {
       reject(`Invalid edX caption file`);
     }
-    //resolve([{}, {}, {}, {text:':-)'}]);
   });
 }
 
