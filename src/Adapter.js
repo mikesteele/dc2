@@ -30,11 +30,13 @@ class Adapter extends React.Component {
   }
 
   detectVideoId() {
-    let videoId = null;
+    let videoId = this.state.videoId;
     if (this.props.site === 'netflix') {
       videoId = this.detectNetflixVideoId();
     } else if (this.props.site === 'youtube') {
       videoId = this.detectYoutubeVideoId(); // TODO - Audit repo for Youtube vs YouTube
+    } else if (this.props.site === 'edx') {
+      videoId = this.detectEdxVideoId();
     }
     if (videoId !== this.state.videoId) {
       // TODO - There are probably other places where I'm setting state unnecessarily
@@ -58,6 +60,12 @@ class Adapter extends React.Component {
     const url = new URL(window.location.href);
     const videoId = url.searchParams.get('v');
     return videoId ? videoId : null;
+  }
+
+  detectEdxVideoId() {
+    // TODO - How can I improve this?
+    // TODO - Does it matter?
+    return window.location.href;
   }
 
   onMessage(message, sender, sendResponse) {
@@ -85,7 +93,7 @@ class Adapter extends React.Component {
     const onPopupOpened = () => { console.log('TODO') };
     if (awareness) {
       const { video } = awareness;
-      playerCurrentTime = video && video.currentTime;
+      playerCurrentTime = awareness.playerCurrentTime || video && video.currentTime;
       captionWindow = awareness.captionWindow;
       captionWindowPosition = awareness.captionWindowPosition;
       captionStyle = awareness.captionStyle;

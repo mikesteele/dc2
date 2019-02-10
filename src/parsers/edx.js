@@ -5,8 +5,8 @@ const parse = (captionFile) => {
       if (parsedCaptionFile.start.length === parsedCaptionFile.end.length && parsedCaptionFile.end.length === parsedCaptionFile.text.length) {
         const captions = parsedCaptionFile.text.map((caption, index) => {
           return {
-            startTime: parsedCaptionFile.start[index],
-            endTime: parsedCaptionFile.end[index],
+            startTime: parsedCaptionFile.start[index] / 1000,
+            endTime: parsedCaptionFile.end[index] / 1000,
             text: caption
           };
         });

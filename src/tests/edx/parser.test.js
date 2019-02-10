@@ -11,7 +11,7 @@ const makeParser = (callback) => {
   });
 }
 
-describe('Netflix parser', () => {
+describe('edX parser', () => {
   it('should correctly parse', done => {
     const captionFile = fs.readFileSync(path.resolve(__dirname, '../assets/edx/caption-file.txt'));
     makeParser(parser => {
