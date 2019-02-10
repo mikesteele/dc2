@@ -1,41 +1,10 @@
 import React from 'react';
-import Popper from 'popper.js';
+import ReactDOM from 'react-dom';
+import CaptionsWithPopper from './CaptionsWithPopper';
 
 class Captions extends React.Component {
   constructor(props) {
     super(props);
-    this.attachToCaptionWindow = this.attachToCaptionWindow.bind(this);
-    this.canAttachToCaptionWindow = this.canAttachToCaptionWindow.bind(this);
-  }
-
-  canAttachToCaptionWindow() {
-    return this.dcPosition && this.props.adapter.captionWindow;
-  }
-
-  attachToCaptionWindow() {
-    console.log('Attaching...');
-    this.popper = new Popper(
-      this.props.adapter.captionWindow,
-      this.dcPosition
-    );
-  }
-
-  componentDidMount() {
-    if (this.canAttachToCaptionWindow()) {
-      this.attachToCaptionWindow();
-    }
-  }
-
-  componentWillUnmount() {
-    // TODO - Delete this.popper - ?
-  }
-
-  componentDidUpdate(prevProps) {
-    if (prevProps.adapter.captionWindowPosition !== this.props.adapter.captionWindowPosition) {
-      if (this.canAttachToCaptionWindow()) {
-        this.attachToCaptionWindow();
-      }
-    }
   }
 
   render() {
@@ -45,34 +14,24 @@ class Captions extends React.Component {
       currentCaptionToRender
     } = this.props;
 
+    const {
+      canRenderInCaptionWindow,
+      captionWindow
+    } = adapter;
+
     if (!settings.isOn || !currentCaptionToRender) {
       return null;
     }
 
-    // Caption Window props
-    const captionWindowProps = {
-      className: 'dc-window'
-    };
-    if (adapter.captionWindowStyle) {
-      captionWindowProps.style = {
-        ...adapter.captionWindowStyle
-      };
-    }
-
-    // Caption props
-    const captionProps = {
-      className: 'dc-caption'
-    };
-    if (adapter.captionClassName) {
-      captionProps.className = `${captionProps.className} ${adapter.captionClassName}`;
-    }
+    const captionProps = {};
     if (adapter.captionStyle) {
-      captionProps.style = {
-        ...adapter.captionStyle
-      };
+      captionProps.style = {...adapter.captionStyle};
+    }
+    if (settings.extraSpace) {
+      captionProps.className = 'extra-space';
     }
 
-    // Replace \n's with <br/> elements - TODO - Improve this
+    // Replace \n's with <br/> elements
     const captionToRender = currentCaptionToRender.split('\n').map(sentence => (
       <React.Fragment>
         <span>{sentence}</span>
@@ -80,15 +39,24 @@ class Captions extends React.Component {
       </React.Fragment>
     ));
 
-    return (
-      <div {...captionWindowProps}>
-        <div ref={ref => { this.dcPosition = ref }}>
-          <div {...captionProps}>
-            { captionToRender }
-          </div>
+    if (captionWindow && canRenderInCaptionWindow) {
+      return ReactDOM.createPortal((
+        <div {...captionProps}>
+          {captionToRender}
         </div>
-      </div>
-    );
+      ), captionWindow);
+    } else if (captionWindow && !canRenderInCaptionWindow) {
+      // TODO - <CaptionsWithPopper {...this.props}/> ?
+      return (
+        <CaptionsWithPopper
+          adapter={adapter}
+          settings={settings}
+          currentCaptionToRender={currentCaptionToRender}
+        />
+      );
+    } else {
+      return null;
+    }
   }
 }
 
