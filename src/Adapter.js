@@ -76,6 +76,7 @@ class Adapter extends React.Component {
     const { awareness, site } = this.props;
     const { videoId } = this.state;
     let playerCurrentTime = null;
+    let canRenderInCaptionWindow = false;
     let captionClassName = null;
     let captionWindow = null;
     let captionWindowPosition = null;
@@ -90,8 +91,10 @@ class Adapter extends React.Component {
       captionStyle = awareness.captionStyle;
       captionClassName = awareness.captionClassName; // TODO - Use null?
       captionWindowStyle = awareness.captionWindowStyle;
+      canRenderInCaptionWindow = awareness.canRenderInCaptionWindow;
     }
     const adapter = {
+      canRenderInCaptionWindow,
       captionClassName,
       captionStyle,
       captionWindow,

@@ -15,6 +15,7 @@ class Captions extends React.Component {
     } = this.props;
 
     const {
+      canRenderInCaptionWindow,
       captionWindow
     } = adapter;
 
@@ -38,12 +39,14 @@ class Captions extends React.Component {
       </React.Fragment>
     ));
 
-    if (captionWindow) {
+    if (captionWindow && canRenderInCaptionWindow) {
       return ReactDOM.createPortal((
         <div {...captionProps}>
           {captionToRender}
         </div>
       ), captionWindow);
+    } else if (captionWindow && !canRenderInCaptionWindow) {
+      // TODO - Render with Popper.js
     } else {
       return null;
     }

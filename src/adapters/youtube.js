@@ -9,6 +9,7 @@ const YoutubeAdapter = {
     captionWindow = document.querySelector('.ytp-caption-window-bottom') || document.querySelector('.caption-window');
     caption = document.querySelector('.captions-text > span');
     return {
+      canRenderInCaptionWindow: true,
       captionWindow: captionWindow ? captionWindow : null,
       captionWindowPosition: captionWindow ? captionWindow.style.cssText : null,
       captionWindowStyle: { textAlign: 'center', width: '700px' },
