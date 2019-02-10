@@ -38,6 +38,7 @@ class BackgroundPage {
     this.captionRequestsInFlight = {};
     this.netflixCaptionRequestPattern = 'https://*.nflxvideo.net/?o=*&v=*&e=*&t=*';
     this.youtubeCaptionRequestPattern = 'https://www.youtube.com/api/timedtext*';
+    this.edxCaptionRequestPattern = 'https://courses.edx.org/*/translation/*';
 
     // Binds
     this.onTabUpdated = this.onTabUpdated.bind(this);
@@ -47,17 +48,19 @@ class BackgroundPage {
     // TODO - Need window.chrome?
 
     // Listeners
-    chrome.webRequest.onBeforeRequest.addListener(
-      this.onBeforeYouTubeCaptionRequest, {
-        urls: [this.youtubeCaptionRequestPattern]
-      }
-    );
-    chrome.webRequest.onBeforeRequest.addListener(
-      this.onBeforeNetflixCaptionRequest, {
-        urls: [this.netflixCaptionRequestPattern]
-      }
-    );
-    chrome.tabs.onUpdated.addListener(this.onTabUpdated);
+    if (window.chrome) {
+      window.chrome.webRequest.onBeforeRequest.addListener(
+        this.onBeforeYouTubeCaptionRequest, {
+          urls: [this.youtubeCaptionRequestPattern]
+        }
+      );
+      window.chrome.webRequest.onBeforeRequest.addListener(
+        this.onBeforeNetflixCaptionRequest, {
+          urls: [this.netflixCaptionRequestPattern]
+        }
+      );
+      window.chrome.tabs.onUpdated.addListener(this.onTabUpdated);
+    }
   }
 
   onBeforeNetflixCaptionRequest(details) {
