@@ -1,6 +1,5 @@
 import React from 'react';
 import ErrorBoundary from './ErrorBoundary';
-import withPersistentAwareness from './with-persistent-awareness';
 import Site from './Site';
 import Adapter from './Adapter';
 import Parser from './Parser';
