@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import CaptionsWithPopper from './CaptionsWithPopper';
+import WithPopper from './Popper';
 
 class Captions extends React.Component {
   constructor(props) {
@@ -21,6 +21,15 @@ class Captions extends React.Component {
 
     if (!settings.isOn || !currentCaptionToRender) {
       return null;
+    }
+
+    const captionWindowProps = {
+      className: 'dc-window'
+    };
+    if (adapter.captionWindowStyle) {
+      captionWindowProps.style = {
+        ...adapter.captionWindowStyle
+      };
     }
 
     const captionProps = {};
@@ -46,13 +55,14 @@ class Captions extends React.Component {
         </div>
       ), captionWindow);
     } else if (captionWindow && !canRenderInCaptionWindow) {
-      // TODO - <CaptionsWithPopper {...this.props}/> ?
       return (
-        <CaptionsWithPopper
-          adapter={adapter}
-          settings={settings}
-          currentCaptionToRender={currentCaptionToRender}
-        />
+        <div {...captionWindowProps}>
+          <WithPopper target={captionWindow}>
+            <div {...captionProps}>
+              { captionToRender }
+            </div>
+          </WithPopper>
+        </div>
       );
     } else {
       return null;
