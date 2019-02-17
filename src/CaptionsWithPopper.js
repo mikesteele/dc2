@@ -1,43 +1,8 @@
 import React from 'react';
 import Popper from 'popper.js';
+import WithPopper from './Popper';
 
 class CaptionsWithPopper extends React.Component {
-  constructor(props) {
-    super(props);
-    this.attachToCaptionWindow = this.attachToCaptionWindow.bind(this);
-    this.canAttachToCaptionWindow = this.canAttachToCaptionWindow.bind(this);
-  }
-
-  canAttachToCaptionWindow() {
-    return this.dcPosition && this.props.adapter.captionWindow;
-  }
-
-  attachToCaptionWindow() {
-    console.log('Attaching...');
-    this.popper = new Popper(
-      this.props.adapter.captionWindow,
-      this.dcPosition
-    );
-  }
-
-  componentDidMount() {
-    if (this.canAttachToCaptionWindow()) {
-      this.attachToCaptionWindow();
-    }
-  }
-
-  componentWillUnmount() {
-    // TODO - Delete this.popper - ?
-  }
-
-  componentDidUpdate(prevProps) {
-    if (prevProps.adapter.captionWindowPosition !== this.props.adapter.captionWindowPosition) {
-      if (this.canAttachToCaptionWindow()) {
-        this.attachToCaptionWindow();
-      }
-    }
-  }
-
   render() {
     const {
       adapter,
@@ -82,11 +47,11 @@ class CaptionsWithPopper extends React.Component {
 
     return (
       <div {...captionWindowProps}>
-        <div ref={ref => { this.dcPosition = ref }}>
+        <WithPopper target={adapter.captionWindow}>
           <div {...captionProps}>
             { captionToRender }
           </div>
-        </div>
+        </WithPopper>
       </div>
     );
   }
