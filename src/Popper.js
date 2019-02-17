@@ -17,7 +17,14 @@ class WithPopper extends React.Component {
     console.log('Attaching...');
     this.popper = new Popper(
       this.props.target,
-      this.popperPosition
+      this.popperPosition,
+      {
+        onCreate: (data) => {
+          if (this.props.onPositionChanged) {
+            this.props.onPositionChanged(data.styles);
+          }
+        }
+      }
     );
   }
 

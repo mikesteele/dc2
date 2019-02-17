@@ -5,6 +5,11 @@ import WithPopper from './Popper';
 class Captions extends React.Component {
   constructor(props) {
     super(props);
+    this.onPopperPositionChanged = this.onPopperPositionChanged.bind(this);
+  }
+
+  onPopperPositionChanged(position) {
+    this.previousPosition = position;
   }
 
   render() {
@@ -51,17 +56,29 @@ class Captions extends React.Component {
     if (captionWindow && canRenderInCaptionWindow) {
       return ReactDOM.createPortal((
         <div {...captionProps}>
-          {captionToRender}
+          { captionToRender }
         </div>
       ), captionWindow);
     } else if (captionWindow && !canRenderInCaptionWindow) {
       return (
         <div {...captionWindowProps}>
-          <WithPopper target={captionWindow}>
+          <WithPopper
+            target={captionWindow}
+            onPositionChanged={this.onPopperPositionChanged}>
             <div {...captionProps}>
               { captionToRender }
             </div>
           </WithPopper>
+        </div>
+      );
+    } else if (this.previousPosition) {
+      return (
+        <div {...captionWindowProps}>
+          <div style={this.previousPosition}>
+            <div {...captionProps}>
+              { captionToRender }
+            </div>
+          </div>
         </div>
       );
     } else {
