@@ -12,6 +12,7 @@ class Provider extends React.Component {
     this.canUseCaptionsFromVideo = this.canUseCaptionsFromVideo.bind(this);
     this.guessLanguage = this.guessLanguage.bind(this);
     this.guessLanguageOfCaptions = this.guessLanguageOfCaptions.bind(this);
+    this.getLoadedLanguages = this.getLoadedLanguages.bind(this);
     if (global.chrome && global.chrome.runtime && global.chrome.runtime.onMessage) {
       global.chrome.runtime.onMessage.addListener(this.onMessage);
     }
@@ -47,6 +48,19 @@ class Provider extends React.Component {
     }
   }
 
+  getLoadedLanguages() {
+    const currentSite = this.props.adapter.site;
+    const videoId = this.props.adapter.videoId;
+    if (currentSite
+        && videoId
+        && this.state.captions.hasOwnProperty(currentSite)
+        && this.state.captions[currentSite].hasOwnProperty(videoId)) {
+      return Object.keys(this.state.captions[currentSite][videoId]);
+    } else {
+      return [];
+    }
+  }
+
   guessLanguageOfCaptions(captions) {
     return new Promise((resolve, reject) => {
       const longestCaption = captions.reduce((a, b) => { return a.text.length > b.text.length ? a : b });
@@ -62,16 +76,7 @@ class Provider extends React.Component {
   }
 
   guessLanguage(text) {
-    return new Promise((resolve, reject) => {
-      translate(text, {
-        from: 'auto',
-        to: 'en'
-      })
-      .then(response => {
-        resolve(response.from.language.iso);
-      })
-      .catch(reject);
-    });
+    return this.props.queue.addToQueue(text);
   }
 
   loadCaptions(captions, language) {
@@ -127,8 +132,23 @@ class Provider extends React.Component {
         });
       break;
 
-      default:
+      case 'get-state':
+      const loadedLanguages = this.getLoadedLanguages();
+      sendResponse({
+        ok: true,
+        settingsAreDefault: true, // TODO
+        isOn: this.props.settings.isOn,
+        secondLanguage: this.props.settings.secondLanguage, // TODO
+        settings: {
+          extraSpace: true, // TODO
+          useCaptionsFromVideo: true, // TODO - Deprecate this setting
+          delayRenderingUntilTranslation: true // TODO - Deprecate this setting
+        },
+        loadedLanguages: loadedLanguages
+      });
+      break;
 
+      default:
       break;
     }
   }
