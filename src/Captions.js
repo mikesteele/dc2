@@ -6,6 +6,9 @@ class Captions extends React.Component {
   constructor(props) {
     super(props);
     this.onPopperPositionChanged = this.onPopperPositionChanged.bind(this);
+    this.previousPosition = null;
+    this.previousCaptionStyle = null;
+    this.previousCaptionWindowStyle = null;
   }
 
   onPopperPositionChanged(position) {
@@ -28,6 +31,13 @@ class Captions extends React.Component {
       return null;
     }
 
+    if (adapter.captionStyle) {
+      this.previousCaptionStyle = adapter.captionStyle;
+    }
+    if (adapter.captionWindowStyle) {
+      this.previousCaptionWindowStyle = adapter.captionWindowStyle;
+    }
+
     const captionWindowProps = {
       className: 'dc-window'
     };
@@ -35,11 +45,15 @@ class Captions extends React.Component {
       captionWindowProps.style = {
         ...adapter.captionWindowStyle
       };
+    } else if (this.previousCaptionWindowStyle) {
+      captionWindowProps.style = {...this.previousCaptionWindowStyle};
     }
 
     const captionProps = {};
     if (adapter.captionStyle) {
       captionProps.style = {...adapter.captionStyle};
+    } else if (this.previousCaptionStyle) {
+      captionProps.style = {...this.previousCaptionStyle};
     }
     if (settings.extraSpace) {
       captionProps.className = 'extra-space';
@@ -54,11 +68,28 @@ class Captions extends React.Component {
     ));
 
     if (captionWindow && canRenderInCaptionWindow) {
-      return ReactDOM.createPortal((
-        <div {...captionProps}>
-          { captionToRender }
-        </div>
+      const portal = ReactDOM.createPortal((
+        <React.Fragment>
+          <div {...captionProps}>
+            { captionToRender }
+          </div>
+        </React.Fragment>
       ), captionWindow);
+      const previousPosition = (
+        <WithPopper
+          target={captionWindow}
+          onPositionChanged={this.onPopperPositionChanged}>
+          <div {...captionProps}>
+            { captionToRender }
+          </div>
+        </WithPopper>
+      );
+      return (
+        <React.Fragment>
+          { portal }
+          { previousPosition }
+       </React.Fragment>
+      );
     } else if (captionWindow && !canRenderInCaptionWindow) {
       return (
         <div {...captionWindowProps}>
