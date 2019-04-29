@@ -15,6 +15,7 @@ export const NetflixAdapterCreator = () => {
   let captionWindowPosition = null;
   let captionWindowStyle = { textAlign: 'center', width: '700px' };
   let video = document.querySelector('video') || null;
+  let defaultCaptionStyle = DefaultCaptionStyle; // TODO - Implement;
 
   let isRenderingImageSubtitles = !!document.querySelector('.image-based-timed-text image');
 
@@ -50,6 +51,7 @@ export const NetflixAdapterCreator = () => {
     captionWindowPosition,
     captionWindowStyle,
     captionStyle,
+    defaultCaptionStyle, // TODO - Implement
     video
   };
 };
