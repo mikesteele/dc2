@@ -54,6 +54,8 @@ class Captions extends React.Component {
       captionProps.style = {...adapter.captionStyle};
     } else if (this.previousCaptionStyle) {
       captionProps.style = {...this.previousCaptionStyle};
+    } else if (adapter.defaultCaptionStyle) {
+      captionProps.style = {...adapter.defaultCaptionStyle};
     }
     if (settings.extraSpace) {
       captionProps.className = 'extra-space';

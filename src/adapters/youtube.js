@@ -18,8 +18,7 @@ export const YoutubeAdapterCreator = () => {
       fontSize: caption.style.fontSize
     } : null,
     captionClassName: 'captions-text',
-    video: video ? video : null,
-    providerInDebugMode: true, //  TODO - Remove
+    video: video ? video : null
   };
 }
 
