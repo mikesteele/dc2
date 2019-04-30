@@ -85,6 +85,7 @@ class Adapter extends React.Component {
     let providerInDebugMode = false
     let time = null;
     let defaultCaptionStyle = null;
+    let caption = null;
     const onPopupOpened = () => { console.log('TODO') };
     if (awareness) {
       const { video } = awareness;
@@ -98,9 +99,11 @@ class Adapter extends React.Component {
       time = awareness.time;
       providerInDebugMode = awareness.providerInDebugMode;
       defaultCaptionStyle = awareness.defaultCaptionStyle;
+      caption = awareness.caption;
     }
     const adapter = {
       canRenderInCaptionWindow,
+      caption,
       captionClassName,
       captionStyle,
       captionWindow,

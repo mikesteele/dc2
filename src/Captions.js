@@ -31,8 +31,9 @@ class Captions extends React.Component {
       return null;
     }
 
-    if (adapter.captionStyle) {
-      this.previousCaptionStyle = adapter.captionStyle;
+    if (adapter.caption) {
+      const captionStyle = window.getComputedStyle(adapter.caption);
+      this.previousCaptionStyle = captionStyle.cssText;
     }
     if (adapter.captionWindowStyle) {
       this.previousCaptionWindowStyle = adapter.captionWindowStyle;
@@ -50,10 +51,10 @@ class Captions extends React.Component {
     }
 
     const captionProps = {};
-    if (adapter.captionStyle) {
-      captionProps.style = {...adapter.captionStyle};
-    } else if (this.previousCaptionStyle) {
-      captionProps.style = {...this.previousCaptionStyle};
+    if (this.previousCaptionStyle) {
+      captionProps.style = {
+        cssText: this.previousCaptionStyle
+      };
     } else if (adapter.defaultCaptionStyle) {
       captionProps.style = {...adapter.defaultCaptionStyle};
     }
@@ -73,6 +74,7 @@ class Captions extends React.Component {
       const portal = ReactDOM.createPortal((
         <React.Fragment>
           <div {...captionProps}>
+            <br/>
             { captionToRender }
           </div>
         </React.Fragment>
@@ -82,6 +84,7 @@ class Captions extends React.Component {
           target={captionWindow}
           onPositionChanged={this.onPopperPositionChanged}>
           <div {...captionProps}>
+            <br/>
             { captionToRender }
           </div>
         </WithPopper>
@@ -109,6 +112,7 @@ class Captions extends React.Component {
         <div {...captionWindowProps}>
           <div style={this.previousPosition}>
             <div {...captionProps}>
+              <br/>
               { captionToRender }
             </div>
           </div>

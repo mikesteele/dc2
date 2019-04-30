@@ -10,14 +10,7 @@ export const YoutubeAdapterCreator = () => {
     captionWindow: captionWindow ? captionWindow : null,
     captionWindowPosition: captionWindow ? captionWindow.style.cssText : null,
     captionWindowStyle: { textAlign: 'center', width: '700px' },
-    captionStyle: caption ? {
-      background: caption.style.background,
-      backgroundColor: caption.style.backgroundColor,
-      color: caption.style.color,
-      fontFamily: caption.style.fontFamily,
-      fontSize: caption.style.fontSize
-    } : null,
-    captionClassName: 'captions-text',
+    caption: caption || null,
     video: video ? video : null
   };
 }

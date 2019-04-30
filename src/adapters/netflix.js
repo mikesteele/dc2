@@ -14,6 +14,7 @@ export const NetflixAdapterCreator = () => {
   let captionWindowStyle = { textAlign: 'center', width: '700px' };
   let video = document.querySelector('video') || null;
   const defaultCaptionStyle = DefaultCaptionStyle;
+  let caption = null;
 
   let isRenderingImageSubtitles = !!document.querySelector('.image-based-timed-text image');
 
@@ -28,27 +29,17 @@ export const NetflixAdapterCreator = () => {
     captionWindow = document.querySelector('.player-timedtext-text-container') || null;
     if (captionWindow) {
       captionWindowPosition = captionWindow.style.cssText;
-      let caption = captionWindow.querySelector('span');
-      if (caption) {
-        captionStyle = {
-          background: caption.style.background,
-          backgroundColor: caption.style.backgroundColor,
-          color: caption.style.color,
-          fontFamily: caption.style.fontFamily,
-          fontSize: caption.style.fontSize,
-          fontWeight: caption.style.fontWeight,
-          textShadow: caption.style.textShadow
-        };
-      }
+      caption = captionWindow.querySelector('span') || null;
     }
   }
 
   return {
     canRenderInCaptionWindow,
+    caption,
     captionWindow,
     captionWindowPosition,
     captionWindowStyle,
-    captionStyle,
+    captionStyle, // TODO - Deprecate
     defaultCaptionStyle,
     video
   };
