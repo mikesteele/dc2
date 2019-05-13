@@ -26,26 +26,29 @@ export const convertDisplayTimeToSeconds = (displayTime) => {
   return seconds;
 }
 
+const EdxAdapterCreator = () => {
+  let canRenderInCaptionWindow = true;
+  let captionWindow = document.querySelector('li.current');
+  let playerCurrentTime = null;
+
+  let videoTime = document.querySelector('.vidtime');
+  if (videoTime) {
+    // 0:45 / 6:00
+    const displayTimes = videoTime.textContent.split('/');
+    playerCurrentTime = convertDisplayTimeToSeconds(displayTimes[0]);
+  }
+  return {
+    canRenderInCaptionWindow,
+    captionWindow,
+    playerCurrentTime
+  };
+}
+
 const EdxAdapter = {
   root: document.body,
   uniqueSelector: '.xblock',
-  value: () => {
-    let canRenderInCaptionWindow = true;
-    let captionWindow = document.querySelector('li.current');
-    let playerCurrentTime = null;
-
-    let videoTime = document.querySelector('.vidtime');
-    if (videoTime) {
-      // 0:45 / 6:00
-      const displayTimes = videoTime.textContent.split('/');
-      playerCurrentTime = convertDisplayTimeToSeconds(displayTimes[0]);
-    }
-    return {
-      canRenderInCaptionWindow,
-      captionWindow,
-      playerCurrentTime
-    };
-  }
+  value: EdxAdapterCreator
 }
 
+export { EdxAdapterCreator };
 export default EdxAdapter;

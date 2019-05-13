@@ -1,16 +1,17 @@
 import React from 'react';
 import ErrorBoundary from './ErrorBoundary';
-import withPersistentAwareness from './with-persistent-awareness';
 import Site from './Site';
 import Adapter from './Adapter';
 import Parser from './Parser';
 import PopupMessageHandler from './PopupMessageHandler';
 import Provider from './Provider';
 import Captions from './Captions';
-import NetflixAdapter from './adapters/netflix';
-import YoutubeAdapter from './adapters/youtube';
-import EdxAdapter from './adapters/edx';
+import TranslationQueue from './TranslationQueue';
+import { NetflixAdapterCreator } from './adapters/netflix';
+import { YoutubeAdapterCreator } from './adapters/youtube';
+import { EdxAdapterCreator } from './adapters/edx';
 import InjectedStyles from './Styles';
+import withTimer from './with-timer';
 
 class App extends React.Component {
   render() {
@@ -21,12 +22,13 @@ class App extends React.Component {
           {(site) => {
             let ConnectedAdapter;
             if (site ===  'netflix') {
-              ConnectedAdapter = withPersistentAwareness(Adapter, NetflixAdapter);
+              ConnectedAdapter = withTimer(Adapter, NetflixAdapterCreator);
               // TODO - Should have an HOC to pass site
             } else if (site === 'youtube') {
-              ConnectedAdapter = withPersistentAwareness(Adapter, YoutubeAdapter);
+              ConnectedAdapter = withTimer(Adapter, YoutubeAdapterCreator);
             } else if (site === 'edx') {
-              ConnectedAdapter = withPersistentAwareness(Adapter, EdxAdapter);
+              ConnectedAdapter = withTimer(Adapter, EdxAdapterCreator);
+            }
             } else if (site === null) {
               return (
                 <div/>
@@ -37,26 +39,31 @@ class App extends React.Component {
             return (
               <ConnectedAdapter site={site}>
                 {(adapter) => (
-                  <Parser>
-                    {(parser) => (
-                      <PopupMessageHandler adapter={adapter}>
-                        {(settings) => (
-                          <Provider
-                            adapter={adapter}
-                            parser={parser}
-                            settings={settings}>
-                            {(currentCaptionToRender) => (
-                              <Captions
-                                adapter={adapter}
-                                currentCaptionToRender={currentCaptionToRender}
-                                settings={settings}
-                              />
-                            )}
-                          </Provider>
-                        )}
-                      </PopupMessageHandler>
-                    )}
-                  </Parser>
+                  <TranslationQueue>
+                  {(queue) => (
+                    <Parser>
+                      {(parser) => (
+                        <PopupMessageHandler adapter={adapter}>
+                          {(settings) => (
+                            <Provider
+                              adapter={adapter}
+                              parser={parser}
+                              settings={settings}
+                              queue={queue}>
+                              {(currentCaptionToRender) => (
+                                <Captions
+                                  adapter={adapter}
+                                  currentCaptionToRender={currentCaptionToRender}
+                                  settings={settings}
+                                />
+                              )}
+                            </Provider>
+                          )}
+                        </PopupMessageHandler>
+                      )}
+                    </Parser>
+                  )}
+                  </TranslationQueue>
                 )}
               </ConnectedAdapter>
             );

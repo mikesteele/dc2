@@ -1,10 +1,15 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import CaptionsWithPopper from './CaptionsWithPopper';
+import WithPopper from './Popper';
 
 class Captions extends React.Component {
   constructor(props) {
     super(props);
+    this.onPopperPositionChanged = this.onPopperPositionChanged.bind(this);
+  }
+
+  onPopperPositionChanged(position) {
+    this.previousPosition = position;
   }
 
   render() {
@@ -26,6 +31,15 @@ class Captions extends React.Component {
       return null;
     }
 
+    const captionWindowProps = {
+      className: 'dc-window'
+    };
+    if (adapter.captionWindowStyle) {
+      captionWindowProps.style = {
+        ...adapter.captionWindowStyle
+      };
+    }
+
     const captionProps = {};
     if (adapter.captionStyle) {
       captionProps.style = {...adapter.captionStyle};
@@ -45,17 +59,30 @@ class Captions extends React.Component {
     if (captionWindow && canRenderInCaptionWindow) {
       return ReactDOM.createPortal((
         <div {...captionProps}>
-          {captionToRender}
+          { captionToRender }
         </div>
       ), captionWindow);
     } else if (captionWindow && !canRenderInCaptionWindow) {
-      // TODO - <CaptionsWithPopper {...this.props}/> ?
       return (
-        <CaptionsWithPopper
-          adapter={adapter}
-          settings={settings}
-          currentCaptionToRender={currentCaptionToRender}
-        />
+        <div {...captionWindowProps}>
+          <WithPopper
+            target={captionWindow}
+            onPositionChanged={this.onPopperPositionChanged}>
+            <div {...captionProps}>
+              { captionToRender }
+            </div>
+          </WithPopper>
+        </div>
+      );
+    } else if (this.previousPosition) {
+      return (
+        <div {...captionWindowProps}>
+          <div style={this.previousPosition}>
+            <div {...captionProps}>
+              { captionToRender }
+            </div>
+          </div>
+        </div>
       );
     } else {
       return null;
