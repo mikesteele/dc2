@@ -28,15 +28,25 @@ export const convertDisplayTimeToSeconds = (displayTime) => {
 
 const EdxAdapterCreator = () => {
   let canRenderInCaptionWindow = true;
-  let captionWindow = document.querySelector('li.current');
+  let captionWindow = null;
   let playerCurrentTime = null;
+
+  // Edx allows user to follow along with captions in the sidebar or captions in a video.
+  const captionsInVideo = document.querySelector('.closed-captions.is-visible');
+  if (captionsInVideo) {
+    // If user toggled captions on in video, let's render them there.
+    captionWindow = document.querySelector('.closed-captions.is-visible');
+  } else {
+    // If not, we'll render the second captions in the sidebar.
+    captionWindow = document.querySelector('li.current');
+  }
 
   let videoTime = document.querySelector('.vidtime');
   if (videoTime) {
-    // 0:45 / 6:00
-    const displayTimes = videoTime.textContent.split('/');
+    const displayTimes = videoTime.textContent.split('/'); // Ex. 0:45 / 6:00
     playerCurrentTime = convertDisplayTimeToSeconds(displayTimes[0]);
   }
+
   return {
     canRenderInCaptionWindow,
     captionWindow,

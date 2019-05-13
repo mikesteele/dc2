@@ -28,7 +28,6 @@ class App extends React.Component {
               ConnectedAdapter = withTimer(Adapter, YoutubeAdapterCreator);
             } else if (site === 'edx') {
               ConnectedAdapter = withTimer(Adapter, EdxAdapterCreator);
-            }
             } else if (site === null) {
               return (
                 <div/>
