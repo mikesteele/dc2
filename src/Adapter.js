@@ -83,6 +83,7 @@ class Adapter extends React.Component {
     let captionWindowStyle = null;
     let captionStyle = null;
     let time = null;
+    let providerInDebugMode = false;
     const onPopupOpened = () => { console.log('TODO') };
     if (awareness) {
       const { video } = awareness;
@@ -93,6 +94,7 @@ class Adapter extends React.Component {
       captionClassName = awareness.captionClassName; // TODO - Use null?
       captionWindowStyle = awareness.captionWindowStyle;
       canRenderInCaptionWindow = awareness.canRenderInCaptionWindow;
+      providerInDebugMode = awareness.providerInDebugMode;
       time = awareness.time;
     }
     const adapter = {
@@ -103,6 +105,7 @@ class Adapter extends React.Component {
       captionWindowPosition,
       captionWindowStyle,
       playerCurrentTime,
+      providerInDebugMode,
       videoId,
       onPopupOpened,
       site,
