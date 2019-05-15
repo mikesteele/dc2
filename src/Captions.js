@@ -28,9 +28,7 @@ class Captions extends React.Component {
       return null;
     }
 
-    const captionWindowProps = {
-      className: 'dc-window'
-    };
+    const captionWindowProps = {};
     if (adapter.captionWindowStyle) {
       captionWindowProps.style = {
         ...adapter.captionWindowStyle
@@ -61,15 +59,15 @@ class Captions extends React.Component {
       ), captionWindow);
     } else if (captionWindow && !canRenderInCaptionWindow) {
       return (
-        <div {...captionWindowProps}>
-          <WithPopper
-            target={captionWindow}
-            onPositionChanged={this.onPopperPositionChanged}>
+        <WithPopper
+          target={captionWindow}
+          onPositionChanged={this.onPopperPositionChanged}>
+          <div {...captionWindowProps}>
             <div {...captionProps}>
               { captionToRender }
             </div>
-          </WithPopper>
-        </div>
+          </div>
+        </WithPopper>
       );
     } else if (this.previousPosition) {
       return (
