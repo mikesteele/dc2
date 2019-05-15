@@ -1,3 +1,4 @@
+````
 const IntegrationWithCustomSetting = {
   adapter: (customSettings) => {
     let captionStyle = {};
@@ -16,3 +17,4 @@ const IntegrationWithCustomSetting = {
     }
   }
 }
+````
