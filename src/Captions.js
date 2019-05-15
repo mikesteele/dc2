@@ -70,9 +70,10 @@ class Captions extends React.Component {
         </WithPopper>
       );
     } else if (this.previousPosition) {
+      // TODO - Write test to be sure classes passed by Popper (eg. 'dc-popper') are passed when using previous position
       return (
-        <div {...captionWindowProps}>
-          <div style={this.previousPosition}>
+        <div className='dc-popper' style={this.previousPosition}>
+          <div {...captionWindowProps}>
             <div {...captionProps}>
               { captionToRender }
             </div>
