@@ -27,7 +27,7 @@ export const convertDisplayTimeToSeconds = (displayTime) => {
 }
 
 const EdxAdapterCreator = () => {
-  let canRenderInCaptionWindow = true;
+  let canRenderInCaptionWindow = false; // TODO - Should be true?
   let captionWindow = null;
   let playerCurrentTime = null;
 
