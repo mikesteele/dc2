@@ -24,7 +24,7 @@ It's messier in complex SPAs, like Netflix. See https://github.com/mikesteele/du
 
 The Netflix Adapter is messy because of the lack of third-party positioning libraries, like https://github.com/HubSpot/tether. Re-writing the injected bundle to React will make including third-party libraries easier.
 
-v2 adapters can be found here: https://github.com/mikesteele/dc2/blob/master/src/adapters/netflix.js (API is not final)
+v2 adapters can be found here: https://github.com/mikesteele/dc2/blob/master/src/adapters/ (API is not final)
 
 ### Rendering second subtitles in a different root
 
