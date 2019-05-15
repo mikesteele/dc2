@@ -34,11 +34,6 @@ By rendering into a seperate root, v2 doesn't have to worry about being rendered
 
 This also fixes the long-standing issue with Chinese, Japanese and Korean subtitles on Netflix. These three languages are rendered as SVG on Netflix, which isn't easy for the v1 adapters to render into. By rendering in a seperate root, it doesn't matter what the caption window is. See https://github.com/mikesteele/dual-captions/issues/48.
 
-## Running
+## Building
 
-```
-yarn
-yarn build
-```
-
-Load `/build/` as an unpacked extension in Chrome. For more information, see https://developer.chrome.com/extensions/getstarted#unpacked.
+See the README in https://github.com/mikesteele/dc2-build for instructions on building dc2.
