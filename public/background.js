@@ -38,26 +38,35 @@ class BackgroundPage {
     this.captionRequestsInFlight = {};
     this.netflixCaptionRequestPattern = 'https://*.nflxvideo.net/?o=*&v=*&e=*&t=*';
     this.youtubeCaptionRequestPattern = 'https://www.youtube.com/api/timedtext*';
+    this.edxCaptionRequestPattern = 'https://courses.edx.org/*/translation/*';
 
     // Binds
     this.onTabUpdated = this.onTabUpdated.bind(this);
     this.onBeforeNetflixCaptionRequest = this.onBeforeNetflixCaptionRequest.bind(this);
     this.onBeforeYouTubeCaptionRequest = this.onBeforeYouTubeCaptionRequest.bind(this);
+    this.onBeforeEdxCaptionRequest = this.onBeforeEdxCaptionRequest.bind(this);
 
     // TODO - Need window.chrome?
 
     // Listeners
-    chrome.webRequest.onBeforeRequest.addListener(
-      this.onBeforeYouTubeCaptionRequest, {
-        urls: [this.youtubeCaptionRequestPattern]
-      }
-    );
-    chrome.webRequest.onBeforeRequest.addListener(
-      this.onBeforeNetflixCaptionRequest, {
-        urls: [this.netflixCaptionRequestPattern]
-      }
-    );
-    chrome.tabs.onUpdated.addListener(this.onTabUpdated);
+    if (window.chrome) {
+      window.chrome.webRequest.onBeforeRequest.addListener(
+        this.onBeforeYouTubeCaptionRequest, {
+          urls: [this.youtubeCaptionRequestPattern]
+        }
+      );
+      window.chrome.webRequest.onBeforeRequest.addListener(
+        this.onBeforeNetflixCaptionRequest, {
+          urls: [this.netflixCaptionRequestPattern]
+        }
+      );
+      window.chrome.webRequest.onBeforeRequest.addListener(
+        this.onBeforeEdxCaptionRequest, {
+          urls: [this.edxCaptionRequestPattern]
+        }
+      );
+      window.chrome.tabs.onUpdated.addListener(this.onTabUpdated);
+    }
   }
 
   onBeforeNetflixCaptionRequest(details) {
@@ -69,7 +78,7 @@ class BackgroundPage {
         payload: details.url,
         site: 'netflix' // Pass site so a DC instance can ignore if site doesn't match
       }).then(response => {
-        // TODO - delete this.captionRequestsInFlight[details.url];
+        // TODO ? - delete this.captionRequestsInFlight[details.url];
       }).catch(err => {
         console.log(`Couldn't process Netflix caption request. Error: ${err}`);
       });
@@ -85,9 +94,25 @@ class BackgroundPage {
         payload: details.url,
         site: 'youtube' // Pass site so a DC instance can ignore if site doesn't match
       }).then(response => {
-        // TODO - delete this.captionRequestsInFlight[details.url];
+        // TODO ? - delete this.captionRequestsInFlight[details.url];
       }).catch(err => {
         console.log(`Couldn't process YouTube caption request. Error: ${err}`);
+      });
+    }
+  }
+
+  onBeforeEdxCaptionRequest(details) {
+    // TODO - Do you get requesting tabId in details?
+    if (!(details.url in this.captionRequestsInFlight)) {
+      this.captionRequestsInFlight[details.url] = 1;
+      window.sendMessageToActiveTab({
+        type: 'process-caption-request',
+        payload: details.url,
+        site: 'edx' // Pass site so a DC instance can ignore if site doesn't match
+      }).then(response => {
+        // TODO ? - delete this.captionRequestsInFlight[details.url];
+      }).catch(err => {
+        console.log(`Couldn't process edX caption request. Error: ${err}`);
       });
     }
   }

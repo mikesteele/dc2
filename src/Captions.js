@@ -19,6 +19,9 @@ class Captions extends React.Component {
       currentCaptionToRender
     } = this.props;
 
+    //console.log(adapter);
+    console.log(currentCaptionToRender);
+
     const {
       canRenderInCaptionWindow,
       captionWindow
