@@ -47,7 +47,7 @@ class WithPopper extends React.Component {
 
   render() {
     return (
-      <div ref={(ref) => this.popperPosition = ref}>
+      <div className='dc-popper' ref={(ref) => this.popperPosition = ref}>
         {this.props.children}
       </div>
     );
