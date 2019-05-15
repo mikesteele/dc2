@@ -23,6 +23,15 @@ class WithPopper extends React.Component {
           if (this.props.onPositionChanged) {
             this.props.onPositionChanged(data.styles);
           }
+        },
+        placement: 'bottom',
+        modifiers: {
+          preventOverflow: {
+            enabled: false
+          },
+          flip: {
+            enabled: false
+          }
         }
       }
     );
