@@ -1,4 +1,4 @@
-This is a WIP rewrite of https://github.com/mikesteele/dual-captions/.
+separateThis is a WIP rewrite of https://github.com/mikesteele/dual-captions/.
 
 Instead of injecting individual content scripts, this rewrite injects a bundled React app into the page.
 
@@ -14,7 +14,7 @@ See https://github.com/mikesteele/dual-captions/issues/55 and https://github.com
 
 In this rewrite, we re-render second subtitles on DOM mutation and current time changes.
 
-### Utilising third-party positioning libarires
+### Utilizing third-party positioning libraries
 
 The long-term vision of dual-captions is to support hundreds of video sites. That requires a simple adapter API.
 
@@ -32,7 +32,7 @@ The v1 adapters render directly into DOM controlled by the third-party video sit
 
 By rendering into a seperate root, v2 doesn't have to worry about being rendered over.
 
-This also fixes the long-standing issue with Chinese, Japanese and Korean subtitles on Netflix. These three languages are rendered as SVG on Netflix, which isn't easy for the v1 adapters to render into. By rendering in a seperate root, it doesn't matter what the caption window is. See https://github.com/mikesteele/dual-captions/issues/48.
+This also fixes the long-standing issue with Chinese, Japanese and Korean subtitles on Netflix. These three languages are rendered as SVG on Netflix, which isn't easy for the v1 adapters to render into. By rendering in a separate root, it doesn't matter what the caption window is. See https://github.com/mikesteele/dual-captions/issues/48.
 
 ## Building
 
