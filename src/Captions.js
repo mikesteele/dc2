@@ -79,8 +79,10 @@ class Captions extends React.Component {
         <WithPopper
           target={captionWindow}
           onPositionChanged={this.onPopperPositionChanged}>
-          <div {...captionProps}>
-            { captionToRender }
+          <div {...captionWindowProps} style={{visibility: 'hidden'}}>
+            <div {...captionProps}>
+              { captionToRender }
+            </div>
           </div>
         </WithPopper>
       );
