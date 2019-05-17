@@ -68,6 +68,13 @@ class Captions extends React.Component {
     ));
 
     if (captionWindow && canRenderInCaptionWindow) {
+      /**
+       *
+       *  If we can render in the caption window, we'll create a Portal.
+       *  We also render a hidden Popper to capture the last position, so if the caption window disappears,
+       *  we can render captions in the last position it was.
+       *
+       */
       const portal = ReactDOM.createPortal((
         <React.Fragment>
           <div {...captionProps}>
@@ -89,7 +96,7 @@ class Captions extends React.Component {
       return (
         <React.Fragment>
           { portal }
-          { previousPosition }
+          { previousPosition } {/* Position tracker */}
        </React.Fragment>
       );
     } else if (captionWindow && !canRenderInCaptionWindow) {
@@ -105,6 +112,10 @@ class Captions extends React.Component {
         </WithPopper>
       );
     } else if (this.previousPosition) {
+      /**
+       *  If the caption window isn't in the DOM, but we have a caption to render,
+       *  we use the last known position of the second captions.
+       */
       // TODO - Write test to be sure classes passed by Popper (eg. 'dc-popper') are passed when using previous position
       return (
         <div className='dc-popper' style={this.previousPosition}>
