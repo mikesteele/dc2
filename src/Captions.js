@@ -38,9 +38,7 @@ class Captions extends React.Component {
       this.previousCaptionWindowStyle = adapter.captionWindowStyle;
     }
 
-    const captionWindowProps = {
-      className: 'dc-window'
-    };
+    const captionWindowProps = {};
     if (adapter.captionWindowStyle) {
       captionWindowProps.style = {
         ...adapter.captionWindowStyle
@@ -94,20 +92,21 @@ class Captions extends React.Component {
       );
     } else if (captionWindow && !canRenderInCaptionWindow) {
       return (
-        <div {...captionWindowProps}>
-          <WithPopper
-            target={captionWindow}
-            onPositionChanged={this.onPopperPositionChanged}>
+        <WithPopper
+          target={captionWindow}
+          onPositionChanged={this.onPopperPositionChanged}>
+          <div {...captionWindowProps}>
             <div {...captionProps}>
               { captionToRender }
             </div>
-          </WithPopper>
-        </div>
+          </div>
+        </WithPopper>
       );
     } else if (this.previousPosition) {
+      // TODO - Write test to be sure classes passed by Popper (eg. 'dc-popper') are passed when using previous position
       return (
-        <div {...captionWindowProps}>
-          <div style={this.previousPosition}>
+        <div className='dc-popper' style={this.previousPosition}>
+          <div {...captionWindowProps}>
             <div {...captionProps}>
               { captionToRender }
             </div>

@@ -95,6 +95,7 @@ class Adapter extends React.Component {
       captionClassName = awareness.captionClassName; // TODO - Use null?
       captionWindowStyle = awareness.captionWindowStyle;
       canRenderInCaptionWindow = awareness.canRenderInCaptionWindow;
+      providerInDebugMode = awareness.providerInDebugMode;
       time = awareness.time;
       providerInDebugMode = awareness.providerInDebugMode;
       defaultCaptionStyle = awareness.defaultCaptionStyle;
@@ -106,7 +107,9 @@ class Adapter extends React.Component {
       captionWindow,
       captionWindowPosition,
       captionWindowStyle,
+      defaultCaptionStyle,
       playerCurrentTime,
+      providerInDebugMode,
       videoId,
       onPopupOpened,
       site,

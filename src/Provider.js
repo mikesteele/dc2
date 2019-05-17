@@ -178,14 +178,10 @@ class Provider extends React.Component {
 
   render() {
     let currentCaptionToRender = null;
-    const { adapter } = this.props;
-    
-    if (adapter.providerInDebugMode) {
-      currentCaptionToRender = 'In debug mode...';
-      return this.props.children(currentCaptionToRender);
-    }
 
-    if (this.canUseCaptionsFromVideo()) {
+    if (this.props.adapter.providerInDebugMode) {
+      currentCaptionToRender = 'In debug mode...';
+    } else if (this.canUseCaptionsFromVideo()) {
       currentCaptionToRender = this.getCaptionToRender();
     }
     return this.props.children(currentCaptionToRender);

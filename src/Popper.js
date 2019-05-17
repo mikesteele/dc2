@@ -23,6 +23,15 @@ class WithPopper extends React.Component {
           if (this.props.onPositionChanged) {
             this.props.onPositionChanged(data.styles);
           }
+        },
+        placement: 'bottom',
+        modifiers: {
+          preventOverflow: {
+            enabled: false
+          },
+          flip: {
+            enabled: false
+          }
         }
       }
     );
@@ -47,7 +56,7 @@ class WithPopper extends React.Component {
 
   render() {
     return (
-      <div ref={(ref) => this.popperPosition = ref}>
+      <div className='dc-popper' ref={(ref) => this.popperPosition = ref}>
         {this.props.children}
       </div>
     );
