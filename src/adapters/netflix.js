@@ -39,7 +39,7 @@ export const NetflixAdapterCreator = () => {
     captionWindow,
     captionWindowPosition,
     captionWindowStyle,
-    captionStyle, // TODO - Deprecate
+    captionStyle,
     defaultCaptionStyle,
     video
   };

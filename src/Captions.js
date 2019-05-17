@@ -50,13 +50,32 @@ class Captions extends React.Component {
       captionWindowProps.style = {...this.previousCaptionWindowStyle};
     }
 
-    const captionProps = {};
+    const captionProps = {
+      style: {}
+    };
     if (this.previousCaptionStyle) {
       captionProps.style = {
         cssText: this.previousCaptionStyle
       };
     } else if (adapter.defaultCaptionStyle) {
       captionProps.style = {...adapter.defaultCaptionStyle};
+    }
+    if (adapter.captionStyle) {
+      /**
+       *
+       *  React seems to honor style attributes in order.
+       *  Eg. If color is set in style.cssText and style.color,
+       *  whichever is last set in style will take effect.
+       *
+       *  This allows an adapter to use a previous caption style,
+       *  but override a particular property, say fontSize, given
+       *  a setting.
+       *
+       */
+      captionProps.style = {
+        ...captionProps.style,
+        ...adapter.captionStyle
+      }
     }
     if (settings.extraSpace) {
       captionProps.className = 'extra-space';
