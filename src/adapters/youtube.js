@@ -4,7 +4,7 @@ export const YoutubeAdapterCreator = () => {
   let video;
   video = document.querySelector('video');
   captionWindow = document.querySelector('.ytp-caption-window-bottom') || document.querySelector('.caption-window');
-  caption = document.querySelector('.captions-text > span');
+  caption = document.querySelector('.ytp-caption-segment');
   return {
     canRenderInCaptionWindow: true,
     captionWindow: captionWindow ? captionWindow : null,

@@ -184,7 +184,6 @@ class Provider extends React.Component {
     } else if (this.canUseCaptionsFromVideo()) {
       currentCaptionToRender = this.getCaptionToRender();
     }
-
     return this.props.children(currentCaptionToRender);
   }
 };
