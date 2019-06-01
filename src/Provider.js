@@ -12,8 +12,16 @@ class Provider extends React.Component {
     this.canUseCaptionsFromVideo = this.canUseCaptionsFromVideo.bind(this);
     this.guessLanguage = this.guessLanguage.bind(this);
     this.guessLanguageOfCaptions = this.guessLanguageOfCaptions.bind(this);
+  }
+
+  componentDidMount() {
     if (global.chrome && global.chrome.runtime && global.chrome.runtime.onMessage) {
       global.chrome.runtime.onMessage.addListener(this.onMessage);
+      global.setTimeout(() => {
+        global.chrome.runtime.sendMessage({
+          type: 'get-pending-messages'
+        }, () => {});
+      }, 1000);
     }
   }
 
