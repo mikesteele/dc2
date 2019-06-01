@@ -26,6 +26,7 @@ class BackgroundPage {
       }
     );
     window.chrome.tabs.onUpdated.addListener(this.onTabUpdated);
+    window.chrome.runtime.onMessage.addListener(this.onMessage);
   }
 
   sendPendingMessages(tabId) {
@@ -49,11 +50,11 @@ class BackgroundPage {
   }
 
   onMessage(message, sender, sendResponse) {
-    const tabId = sender.id;
     switch (message.type) {
       case 'get-pending-messages':
-      if (tabId) {
-        this.sendPendingMessages(tabId);
+      if (sender.tab && sender.tab.id) {
+        this.sendPendingMessages(sender.tab.id);
+        sendResponse({ ok: true });
       }
       break;
     }
