@@ -59,7 +59,9 @@ it('should pass integration test', done => {
   background.onMessage({
     type: 'get-pending-messages'
   }, {
-    id: MOCK_TAB_ID
+    tab: {
+      id: MOCK_TAB_ID
+    }
   }, () => {});
   wait(200).then(() => {
     expect(window.chrome.tabs.sendMessage.calledOnce).to.be.true;

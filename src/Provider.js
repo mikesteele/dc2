@@ -18,7 +18,7 @@ class Provider extends React.Component {
   componentDidMount() {
     if (global.chrome && global.chrome.runtime && global.chrome.runtime.onMessage) {
       global.chrome.runtime.onMessage.addListener(this.onMessage);
-      global.setTimeout(() => {
+      global.setInterval(() => {
         global.chrome.runtime.sendMessage({
           type: 'get-pending-messages'
         }, () => {});
