@@ -70,21 +70,6 @@ class PopupMessageHandler extends React.Component {
       })
       break;
 
-      case 'get-state':
-      sendResponse({
-        ok: true,
-        settingsAreDefault: true, // TODO
-        isOn: this.state.settings.isOn,
-        secondLanguage: this.state.settings.secondLanguage, // TODO
-        settings: {
-          extraSpace: true, // TODO
-          useCaptionsFromVideo: true, // TODO - Deprecate this setting
-          delayRenderingUntilTranslation: true // TODO - Deprecate this setting
-        },
-        loadedLanguages: [] // TODO - Pass provider, then use this.props.provider.loadedLanguages
-      });
-      break;
-
       // TODO - Should deprecate
       case 'is-on':
       sendResponse({

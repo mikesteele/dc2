@@ -14,7 +14,7 @@ See https://github.com/mikesteele/dual-captions/issues/55 and https://github.com
 
 In this rewrite, we re-render second subtitles on DOM mutation and current time changes.
 
-### Utilising third-party positioning libarires
+### Utilizing third-party positioning libraries
 
 The long-term vision of dual-captions is to support hundreds of video sites. That requires a simple adapter API.
 
@@ -24,19 +24,16 @@ It's messier in complex SPAs, like Netflix. See https://github.com/mikesteele/du
 
 The Netflix Adapter is messy because of the lack of third-party positioning libraries, like https://github.com/HubSpot/tether. Re-writing the injected bundle to React will make including third-party libraries easier.
 
+v2 adapters can be found here: https://github.com/mikesteele/dc2/blob/master/src/adapters/ (API is not final)
+
 ### Rendering second subtitles in a different root
 
 The v1 adapters render directly into DOM controlled by the third-party video site. This requires the v1 observer to keep track of whether what it has rendered has been overwritten by the third-party's own rendering logic.
 
 By rendering into a seperate root, v2 doesn't have to worry about being rendered over.
 
-This also fixes the long-standing issue with Chinese, Japanese and Korean subtitles on Netflix. These three languages are rendered as SVG on Netflix, which isn't easy to render for us to into. By rendering in a seperate root, it doesn't matter what the caption window is. See https://github.com/mikesteele/dual-captions/issues/48.
+This also fixes the long-standing issue with Chinese, Japanese and Korean subtitles on Netflix. These three languages are rendered as SVG on Netflix, which isn't easy for the v1 adapters to render into. By rendering in a separate root, it doesn't matter what the caption window is. See https://github.com/mikesteele/dual-captions/issues/48.
 
-## Running
+## Building
 
-```
-yarn
-yarn build
-```
-
-Load `/build/` as an unpacked extension in Chrome. For more information, see https://developer.chrome.com/extensions/getstarted#unpacked.
+See the README in https://github.com/mikesteele/dc2-build for instructions on building dc2.

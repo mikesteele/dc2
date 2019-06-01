@@ -1,41 +1,18 @@
 import React from 'react';
-import Popper from 'popper.js';
+import ReactDOM from 'react-dom';
+import WithPopper from './Popper';
 
 class Captions extends React.Component {
   constructor(props) {
     super(props);
-    this.attachToCaptionWindow = this.attachToCaptionWindow.bind(this);
-    this.canAttachToCaptionWindow = this.canAttachToCaptionWindow.bind(this);
+    this.onPopperPositionChanged = this.onPopperPositionChanged.bind(this);
+    this.previousPosition = null;
+    this.previousCaptionStyle = null;
+    this.previousCaptionWindowStyle = null;
   }
 
-  canAttachToCaptionWindow() {
-    return this.dcPosition && this.props.adapter.captionWindow;
-  }
-
-  attachToCaptionWindow() {
-    console.log('Attaching...');
-    this.popper = new Popper(
-      this.props.adapter.captionWindow,
-      this.dcPosition
-    );
-  }
-
-  componentDidMount() {
-    if (this.canAttachToCaptionWindow()) {
-      this.attachToCaptionWindow();
-    }
-  }
-
-  componentWillUnmount() {
-    // TODO - Delete this.popper - ?
-  }
-
-  componentDidUpdate(prevProps) {
-    if (prevProps.adapter.captionWindowPosition !== this.props.adapter.captionWindowPosition) {
-      if (this.canAttachToCaptionWindow()) {
-        this.attachToCaptionWindow();
-      }
-    }
+  onPopperPositionChanged(position) {
+    this.previousPosition = position;
   }
 
   render() {
@@ -45,34 +22,44 @@ class Captions extends React.Component {
       currentCaptionToRender
     } = this.props;
 
+    const {
+      canRenderInCaptionWindow,
+      captionWindow
+    } = adapter;
+
     if (!settings.isOn || !currentCaptionToRender) {
       return null;
     }
 
-    // Caption Window props
-    const captionWindowProps = {
-      className: 'dc-window'
-    };
+    if (adapter.captionStyle) {
+      this.previousCaptionStyle = adapter.captionStyle;
+    }
+    if (adapter.captionWindowStyle) {
+      this.previousCaptionWindowStyle = adapter.captionWindowStyle;
+    }
+
+    const captionWindowProps = {};
     if (adapter.captionWindowStyle) {
       captionWindowProps.style = {
         ...adapter.captionWindowStyle
       };
+    } else if (this.previousCaptionWindowStyle) {
+      captionWindowProps.style = {...this.previousCaptionWindowStyle};
     }
 
-    // Caption props
-    const captionProps = {
-      className: 'dc-caption'
-    };
-    if (adapter.captionClassName) {
-      captionProps.className = `${captionProps.className} ${adapter.captionClassName}`;
-    }
+    const captionProps = {};
     if (adapter.captionStyle) {
-      captionProps.style = {
-        ...adapter.captionStyle
-      };
+      captionProps.style = {...adapter.captionStyle};
+    } else if (this.previousCaptionStyle) {
+      captionProps.style = {...this.previousCaptionStyle};
+    } else if (adapter.defaultCaptionStyle) {
+      captionProps.style = {...adapter.defaultCaptionStyle};
+    }
+    if (settings.extraSpace) {
+      captionProps.className = 'extra-space';
     }
 
-    // Replace \n's with <br/> elements - TODO - Improve this
+    // Replace \n's with <br/> elements
     const captionToRender = currentCaptionToRender.split('\n').map(sentence => (
       <React.Fragment>
         <span>{sentence}</span>
@@ -80,15 +67,68 @@ class Captions extends React.Component {
       </React.Fragment>
     ));
 
-    return (
-      <div {...captionWindowProps}>
-        <div ref={ref => { this.dcPosition = ref }}>
+    if (captionWindow && canRenderInCaptionWindow) {
+      /**
+       *
+       *  If we can render in the caption window, we'll create a Portal.
+       *  We also render a hidden Popper to capture the last position, so if the caption window disappears,
+       *  we can render captions in the last position it was.
+       *
+       */
+      const portal = ReactDOM.createPortal((
+        <React.Fragment>
           <div {...captionProps}>
             { captionToRender }
           </div>
+        </React.Fragment>
+      ), captionWindow);
+      const previousPosition = (
+        <WithPopper
+          target={captionWindow}
+          onPositionChanged={this.onPopperPositionChanged}>
+          <div {...captionWindowProps} style={{visibility: 'hidden'}}>
+            <div {...captionProps}>
+              { captionToRender }
+            </div>
+          </div>
+        </WithPopper>
+      );
+      return (
+        <React.Fragment>
+          { portal }
+          { previousPosition } {/* Position tracker */}
+       </React.Fragment>
+      );
+    } else if (captionWindow && !canRenderInCaptionWindow) {
+      return (
+        <WithPopper
+          target={captionWindow}
+          onPositionChanged={this.onPopperPositionChanged}>
+          <div {...captionWindowProps}>
+            <div {...captionProps}>
+              { captionToRender }
+            </div>
+          </div>
+        </WithPopper>
+      );
+    } else if (this.previousPosition) {
+      /**
+       *  If the caption window isn't in the DOM, but we have a caption to render,
+       *  we use the last known position of the second captions.
+       */
+      // TODO - Write test to be sure classes passed by Popper (eg. 'dc-popper') are passed when using previous position
+      return (
+        <div className='dc-popper' style={this.previousPosition}>
+          <div {...captionWindowProps}>
+            <div {...captionProps}>
+              { captionToRender }
+            </div>
+          </div>
         </div>
-      </div>
-    );
+      );
+    } else {
+      return null;
+    }
   }
 }
 
