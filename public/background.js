@@ -86,7 +86,7 @@ class BackgroundPage {
     if (tabId && changeInfo.url) {
       // Let content scripts know the URL changed
       window.chrome.tabs.sendMessage(tabId, {
-        type: 'tab-updated-url'
+        type: 'tab-updated-url' // TODO - Test
       }, () => {});
     }
   }
