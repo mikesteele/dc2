@@ -9,7 +9,7 @@ class PopupMessageHandler extends React.Component {
     // TODO - Need settingsAreDefault?
     this.state = {
       settings: {
-        isOn: true, // TODO - Switch to false in final version
+        isOn: false,
         extraSpace: false,
         secondSubtitleLanguage: 'en'
       }
