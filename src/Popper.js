@@ -46,14 +46,16 @@ class WithPopper extends React.Component {
   }
 
   componentWillUnmount() {
-    // TODO - Delete this.popper - ?
+    this.popper.destroy();
   }
 
   componentDidUpdate(prevProps) {
-    if (prevProps.target !== this.props.target) {
+    if (prevProps.target !== this.props.target && this.canAttachToTarget()) {
       this.createPopper();
     } else {
-      this.popper.scheduleUpdate();
+      if (this.popper) {
+        this.popper.scheduleUpdate();
+      }
     }
   }
 

@@ -72,8 +72,8 @@ class Provider extends React.Component {
 
   guessLanguageOfCaptions(captions) {
     return new Promise((resolve, reject) => {
-      const longestCaption = captions.reduce((a, b) => { return a.text.length > b.text.length ? a : b });
-      this.guessLanguage(longestCaption.text)
+      const allText = captions.reduce((sum, currentCaption) => currentCaption.text + ' ' + sum, '');
+      this.guessLanguage(allText)
          .then(language => {
            resolve({
              captions: captions,
