@@ -1,20 +1,16 @@
 import React from 'react';
 import Popper from 'popper.js';
 
-// TODO - Rename
 class WithPopper extends React.Component {
   constructor(props) {
     super(props);
-    this.attachToTarget = this.attachToTarget.bind(this);
     this.canAttachToTarget = this.canAttachToTarget.bind(this);
+    this.createPopper = this.createPopper.bind(this);
+    this.popper = null;
   }
 
-  canAttachToTarget() {
-    return this.props.target && this.popperPosition;
-  }
-
-  attachToTarget() {
-    console.log('Attaching...');
+  createPopper() {
+    console.log('Creating new Popper.');
     this.popper = new Popper(
       this.props.target,
       this.popperPosition,
@@ -24,11 +20,13 @@ class WithPopper extends React.Component {
             this.props.onPositionChanged(data.styles);
           }
         },
+        onUpdate: (data) => {
+          if (this.props.onPositionChanged) {
+            this.props.onPositionChanged(data.styles);
+          }
+        },
         placement: 'bottom',
         modifiers: {
-          preventOverflow: {
-            enabled: false
-          },
           flip: {
             enabled: false
           }
@@ -37,20 +35,29 @@ class WithPopper extends React.Component {
     );
   }
 
+  canAttachToTarget() {
+    return this.props.target && this.popperPosition;
+  }
+
   componentDidMount() {
     if (this.canAttachToTarget()) {
-      this.attachToTarget();
+      this.createPopper();
     }
   }
 
   componentWillUnmount() {
-    // TODO - Delete this.popper - ?
+    if (this.popper) {
+      this.popper.destroy();
+    }
   }
 
   componentDidUpdate(prevProps) {
-    // TODO - Can optimize
-    if (this.canAttachToTarget()) {
-      this.attachToTarget();
+    if (prevProps.target !== this.props.target && this.canAttachToTarget()) {
+      this.createPopper();
+    } else {
+      if (this.popper) {
+        this.popper.scheduleUpdate();
+      }
     }
   }
 

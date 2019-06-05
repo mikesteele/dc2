@@ -53,7 +53,7 @@ class Provider extends React.Component {
     if (captionToRender) {
       return captionToRender.text;
     } else {
-      return null;
+      return '';
     }
   }
 
@@ -72,8 +72,8 @@ class Provider extends React.Component {
 
   guessLanguageOfCaptions(captions) {
     return new Promise((resolve, reject) => {
-      const longestCaption = captions.reduce((a, b) => { return a.text.length > b.text.length ? a : b });
-      this.guessLanguage(longestCaption.text)
+      const allText = captions.reduce((sum, currentCaption) => currentCaption.text + ' ' + sum, '');
+      this.guessLanguage(allText)
          .then(language => {
            resolve({
              captions: captions,
@@ -198,7 +198,7 @@ class Provider extends React.Component {
   }
 
   render() {
-    let currentCaptionToRender = null;
+    let currentCaptionToRender = '';
 
     if (this.props.adapter.providerInDebugMode) {
       currentCaptionToRender = 'In debug mode...';

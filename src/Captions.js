@@ -2,6 +2,8 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import WithPopper from './Popper';
 
+const Popper = WithPopper;
+
 class Captions extends React.Component {
   constructor(props) {
     super(props);
@@ -27,7 +29,7 @@ class Captions extends React.Component {
       captionWindow
     } = adapter;
 
-    if (!settings.isOn || !currentCaptionToRender) {
+    if (!settings.isOn) {
       return null;
     }
 
@@ -83,7 +85,7 @@ class Captions extends React.Component {
         </React.Fragment>
       ), captionWindow);
       const previousPosition = (
-        <WithPopper
+        <Popper
           target={captionWindow}
           onPositionChanged={this.onPopperPositionChanged}>
           <div {...captionWindowProps} style={{visibility: 'hidden'}}>
@@ -91,7 +93,7 @@ class Captions extends React.Component {
               { captionToRender }
             </div>
           </div>
-        </WithPopper>
+        </Popper>
       );
       return (
         <React.Fragment>
@@ -101,7 +103,7 @@ class Captions extends React.Component {
       );
     } else if (captionWindow && !canRenderInCaptionWindow) {
       return (
-        <WithPopper
+        <Popper
           target={captionWindow}
           onPositionChanged={this.onPopperPositionChanged}>
           <div {...captionWindowProps}>
@@ -109,7 +111,7 @@ class Captions extends React.Component {
               { captionToRender }
             </div>
           </div>
-        </WithPopper>
+        </Popper>
       );
     } else if (this.previousPosition) {
       /**
