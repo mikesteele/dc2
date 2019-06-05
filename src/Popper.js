@@ -46,7 +46,9 @@ class WithPopper extends React.Component {
   }
 
   componentWillUnmount() {
-    this.popper.destroy();
+    if (this.popper) {
+      this.popper.destroy();
+    }
   }
 
   componentDidUpdate(prevProps) {
