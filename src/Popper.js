@@ -1,27 +1,22 @@
 import React from 'react';
 import Popper from 'popper.js';
 
-// TODO - Rename
 class WithPopper extends React.Component {
   constructor(props) {
     super(props);
-    this.attachToTarget = this.attachToTarget.bind(this);
     this.canAttachToTarget = this.canAttachToTarget.bind(this);
+    this.createPopper = this.createPopper.bind(this);
+    this.popper = null;
   }
 
-  canAttachToTarget() {
-    return this.props.target && this.popperPosition;
-  }
-
-  attachToTarget() {
-    console.log('Attaching...');
+  createPopper() {
     this.popper = new Popper(
       this.props.target,
       this.popperPosition,
       {
         onCreate: (data) => {
           if (this.props.onPositionChanged) {
-            this.props.onPositionChanged(data.styles);
+            this.props.onPositionChanged(data.styles); // TODO - This shouldn't be here
           }
         },
         placement: 'bottom',
@@ -37,9 +32,13 @@ class WithPopper extends React.Component {
     );
   }
 
+  canAttachToTarget() {
+    return this.props.target && this.popperPosition;
+  }
+
   componentDidMount() {
     if (this.canAttachToTarget()) {
-      this.attachToTarget();
+      this.createPopper();
     }
   }
 
@@ -48,10 +47,7 @@ class WithPopper extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    // TODO - Can optimize
-    if (this.canAttachToTarget()) {
-      this.attachToTarget();
-    }
+    // TODO - Update Popper
   }
 
   render() {

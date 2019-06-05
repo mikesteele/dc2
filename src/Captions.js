@@ -2,8 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import WithPopper from './Popper';
 
-const Popper = props => props.children; // TODO - Remove
-// TODO - Add const Popper = WithPopper;
+const Popper = WithPopper;
 
 class Captions extends React.Component {
   constructor(props) {
