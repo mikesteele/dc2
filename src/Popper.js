@@ -10,20 +10,23 @@ class WithPopper extends React.Component {
   }
 
   createPopper() {
+    console.log('Creating new Popper.');
     this.popper = new Popper(
       this.props.target,
       this.popperPosition,
       {
         onCreate: (data) => {
           if (this.props.onPositionChanged) {
-            this.props.onPositionChanged(data.styles); // TODO - This shouldn't be here
+            this.props.onPositionChanged(data.styles);
+          }
+        },
+        onUpdate: (data) => {
+          if (this.props.onPositionChanged) {
+            this.props.onPositionChanged(data.styles);
           }
         },
         placement: 'bottom',
         modifiers: {
-          preventOverflow: {
-            enabled: false
-          },
           flip: {
             enabled: false
           }
@@ -47,7 +50,11 @@ class WithPopper extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    // TODO - Update Popper
+    if (prevProps.target !== this.props.target) {
+      this.createPopper();
+    } else {
+      this.popper.scheduleUpdate();
+    }
   }
 
   render() {

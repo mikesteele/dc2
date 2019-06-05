@@ -29,7 +29,7 @@ class Captions extends React.Component {
       captionWindow
     } = adapter;
 
-    if (!settings.isOn || !currentCaptionToRender) {
+    if (!settings.isOn) {
       return null;
     }
 

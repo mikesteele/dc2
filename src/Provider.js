@@ -53,7 +53,7 @@ class Provider extends React.Component {
     if (captionToRender) {
       return captionToRender.text;
     } else {
-      return null;
+      return '';
     }
   }
 
@@ -198,7 +198,7 @@ class Provider extends React.Component {
   }
 
   render() {
-    let currentCaptionToRender = null;
+    let currentCaptionToRender = '';
 
     if (this.props.adapter.providerInDebugMode) {
       currentCaptionToRender = 'In debug mode...';
