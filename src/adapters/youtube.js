@@ -6,7 +6,7 @@ export const YoutubeAdapterCreator = () => {
   captionWindow = document.querySelector('.ytp-caption-window-bottom') || document.querySelector('.caption-window');
   caption = document.querySelector('.ytp-caption-segment');
   return {
-    canRenderInCaptionWindow: false, // TODO - Revert
+    canRenderInCaptionWindow: true,
     captionWindow: captionWindow ? captionWindow : null,
     captionWindowPosition: captionWindow ? captionWindow.style.cssText : null,
     captionWindowStyle: { textAlign: 'center', width: '700px' },

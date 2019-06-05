@@ -7,7 +7,7 @@ const DefaultCaptionStyle = {
 };
 
 export const NetflixAdapterCreator = () => {
-  let canRenderInCaptionWindow = false; // TODO - Revert
+  let canRenderInCaptionWindow = true;
   let captionStyle = null;
   let captionWindow = null;
   let captionWindowPosition = null;
