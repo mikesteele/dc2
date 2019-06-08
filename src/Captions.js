@@ -69,6 +69,8 @@ class Captions extends React.Component {
       </React.Fragment>
     ));
 
+    const shouldRenderCaptionWindow = currentCaptionToRender !== '';
+
     if (captionWindow && canRenderInCaptionWindow) {
       /**
        *
@@ -106,11 +108,17 @@ class Captions extends React.Component {
         <Popper
           target={captionWindow}
           onPositionChanged={this.onPopperPositionChanged}>
-          <div {...captionWindowProps}>
-            <div {...captionProps}>
-              { captionToRender }
-            </div>
-          </div>
+          {
+            shouldRenderCaptionWindow ? (
+              <div {...captionWindowProps}>
+                <div {...captionProps}>
+                  { captionToRender }
+                </div>
+              </div>
+            ) : (
+              <div/>
+            )
+          }
         </Popper>
       );
     } else if (this.previousPosition) {
@@ -119,7 +127,7 @@ class Captions extends React.Component {
        *  we use the last known position of the second captions.
        */
       // TODO - Write test to be sure classes passed by Popper (eg. 'dc-popper') are passed when using previous position
-      return (
+      return shouldRenderCaptionWindow ? (
         <div className='dc-popper' style={this.previousPosition}>
           <div {...captionWindowProps}>
             <div {...captionProps}>
@@ -127,6 +135,8 @@ class Captions extends React.Component {
             </div>
           </div>
         </div>
+      ) : (
+        <div/>
       );
     } else {
       return null;
