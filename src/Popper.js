@@ -41,6 +41,7 @@ class WithPopper extends React.Component {
 
   componentDidMount() {
     if (this.canAttachToTarget()) {
+      this.moveTarget();
       this.createPopper();
     }
   }
@@ -53,10 +54,28 @@ class WithPopper extends React.Component {
 
   componentDidUpdate(prevProps) {
     if (prevProps.target !== this.props.target && this.canAttachToTarget()) {
+      this.moveTarget();
       this.createPopper();
     } else {
       if (this.popper) {
         this.popper.scheduleUpdate();
+      }
+    }
+  }
+
+  moveTarget() {
+    const target = this.props.target;
+    const DC_MOVED = '0.1234px'; // Value that notes if a target.style was set by DC.
+    const MOVE_AMOUNT = '150px';
+    if (target) {
+      if (target.style.top && !target.style.top.includes(DC_MOVED)) {
+        console.log(`Setting style top...${target.style.top}`);
+        target.style.top = `calc(${target.style.top} - ${MOVE_AMOUNT} + ${DC_MOVED})`; // TODO - Untested
+      } else if (target.style.bottom && !target.style.bottom.includes(DC_MOVED)) {
+        console.log(`Setting style bottom...${target.style.bottom}`);
+        target.style.bottom = `calc(${target.style.bottom} + ${MOVE_AMOUNT} + ${DC_MOVED})`;
+      } else {
+        // TODO - Negative margin top/bottom?
       }
     }
   }
