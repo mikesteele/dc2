@@ -154,18 +154,17 @@ class Provider extends React.Component {
       break;
 
       case 'get-state':
+      const { settings } = this.props;
       const loadedLanguages = this.getLoadedLanguages();
       sendResponse({
         ok: true,
-        settingsAreDefault: true, // TODO
-        isOn: this.props.settings.isOn,
-        secondLanguage: this.props.settings.secondLanguage, // TODO
+        settingsAreDefault: settings.settingsAreDefault,
+        isOn: settings.isOn,
+        secondLanguage: settings.secondSubtitleLanguage,
         settings: {
-          extraSpace: true, // TODO
-          useCaptionsFromVideo: true, // TODO - Deprecate this setting
-          delayRenderingUntilTranslation: true // TODO - Deprecate this setting
+          extraSpace: settings.extraSpace,
         },
-        loadedLanguages: loadedLanguages
+        loadedLanguages: loadedLanguages,
       });
       break;
 

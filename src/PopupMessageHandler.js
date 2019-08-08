@@ -5,13 +5,12 @@ class PopupMessageHandler extends React.Component {
     super(props);
     this.onMessage = this.onMessage.bind(this);
 
-    // TODO - What should be default settings?
-    // TODO - Need settingsAreDefault?
     this.state = {
       settings: {
-        isOn: true, // TODO - Switch to false in final version
+        isOn: false,
         extraSpace: false,
-        secondSubtitleLanguage: 'en'
+        secondSubtitleLanguage: 'none',
+        settingsAreDefault: true,
       }
     }
 
@@ -34,8 +33,9 @@ class PopupMessageHandler extends React.Component {
     this.setState(state => ({
       settings: {
         ...state.settings,
-        [setting]: value
-      }
+        [setting]: value,
+        settingsAreDefault: false,
+      },
     }));
   }
 
