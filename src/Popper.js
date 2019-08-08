@@ -11,6 +11,9 @@ class WithPopper extends React.Component {
 
   createPopper() {
     console.log('Creating new Popper.');
+    if (this.popper) {
+      this.popper.destroy();
+    }
     this.popper = new Popper(
       this.props.target,
       this.popperPosition,

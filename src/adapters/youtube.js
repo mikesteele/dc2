@@ -14,16 +14,18 @@ export const YoutubeAdapterCreator = () => {
   };
 
   return {
-    canRenderInCaptionWindow: true,
+    canRenderInCaptionWindow: false,
     captionWindow: captionWindow ? captionWindow : null,
     captionWindowPosition: captionWindow ? captionWindow.style.cssText : null,
-    captionWindowStyle: { textAlign: 'center', width: '700px' },
+    captionWindowStyle: {
+      textAlign: 'center'
+    },
     captionStyle: caption ? {
-      background: caption.style.background,
-      backgroundColor: caption.style.backgroundColor,
-      color: caption.style.color,
+      background: 'black',
+      color: 'white',
       fontFamily: caption.style.fontFamily,
-      fontSize: caption.style.fontSize
+      fontSize: caption.style.fontSize,
+      padding: '4px',
     } : null,
     captionClassName: 'captions-text',
     video: video ? video : null,
