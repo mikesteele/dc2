@@ -95,6 +95,20 @@ class PopupMessageHandler extends React.Component {
       });
       break;
 
+      case "popup-opened":
+      const { adapter } = this.props;
+      if (adapter.error) {
+        sendResponse({
+          ok: false,
+          errorType: adapter.error,
+        });
+      } else {
+        sendResponse({
+          ok: true,
+        });
+      }
+      break;
+
       default:
       break;
     }
