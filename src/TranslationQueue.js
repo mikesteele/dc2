@@ -22,11 +22,11 @@ class TranslationQueue extends React.Component {
   }
 
   componentDidMount() {
-    window.chrome.runtime.onMessage.addListener(this.onMessage);
+    global.chrome.runtime.onMessage.addListener(this.onMessage);
   }
 
   componentWillUnmount() {
-    window.chrome.runtime.onMessage.removeListener(this.onMessage);
+    global.chrome.runtime.onMessage.removeListener(this.onMessage);
   }
 
   onMessage(message, sender, sendResponse) {
